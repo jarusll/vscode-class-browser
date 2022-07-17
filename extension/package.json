@@ -1,7 +1,7 @@
 {
-  "name": "vstodo",
-  "displayName": "VSTodo",
-  "description": "Keeping track of stuff",
+  "name": "class-browser",
+  "displayName": "Class Browser",
+  "description": "Smalltalk styled class browser",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.52.0"
@@ -10,11 +10,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:vstodo.helloWorld",
-    "onCommand:vstodo.askQuestion",
     "onCommand:vstodo.refresh",
-    "onCommand:vstodo.addTodo",
-    "onCommand:vstodo.authenticate",
     "onView:vstodo-sidebar"
   ],
   "main": "./dist/extension.js",
@@ -23,7 +19,7 @@
       "activitybar": [
         {
           "id": "vstodo-sidebar-view",
-          "title": "VSTodo",
+          "title": "Class Browser",
           "icon": "media/checklist.svg"
         }
       ]
@@ -41,28 +37,9 @@
     },
     "commands": [
       {
-        "command": "vstodo.helloWorld",
-        "title": "Hello World"
-      },
-      {
-        "command": "vstodo.askQuestion",
-        "category": "VSTodo",
-        "title": "Ask Question"
-      },
-      {
         "command": "vstodo.refresh",
         "category": "VSTodo",
         "title": "Refresh"
-      },
-      {
-        "command": "vstodo.addTodo",
-        "category": "VSTodo",
-        "title": "Add Todo From Selection"
-      },
-      {
-        "command": "vstodo.authenticate",
-        "category": "VSTodo",
-        "title": "Authenticate"
       }
     ]
   },

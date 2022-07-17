@@ -7,12 +7,12 @@ export function activate(context: vscode.ExtensionContext) {
 
   const sidebarProvider = new SidebarProvider(context.extensionUri);
 
-  const item = vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Right
-  );
-  item.text = "$(beaker) Add Todo";
-  item.command = "vstodo.addTodo";
-  item.show();
+  // const item = vscode.window.createStatusBarItem(
+  //   vscode.StatusBarAlignment.Right
+  // );
+  // item.text = "$(beaker) Add Todo";
+  // item.command = "vstodo.addTodo";
+  // item.show();
 
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider("vstodo-sidebar", sidebarProvider)
