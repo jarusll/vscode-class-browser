@@ -5,7 +5,7 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
   _doc?: vscode.TextDocument;
 
-  constructor(private readonly _extensionUri: vscode.Uri) {}
+  constructor(private readonly _extensionUri: vscode.Uri) { }
 
   public resolveWebviewView(webviewView: vscode.WebviewView) {
     this._view = webviewView;
@@ -27,17 +27,55 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
-        case "search": {
-          vscode.commands.executeCommand("vscode.executeWorkspaceSymbolProvider", data.value)
+        case "search-class": {
+          console.log("data value", data.value);
+          if (data.value === "*") {
+            console.log("everything");
+            let result: any[] = []
+            const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+            alphabet.forEach(x => {
+              console.log(x.toString());
+              vscode.commands.executeCommand("vscode.executeWorkspaceSymbolProvider", x.toString())
+                .then(
+                  function (symbols: vscode.SymbolInformation[]) {
+                    webviewView.webview.postMessage({
+                      type: "partial-class-result",
+                      value: symbols.filter(item => item.kind === 4)
+                    });
+                  }
+                );
+            });
+            // console.log("result", result)
+            // webviewView.webview.postMessage({
+            //   type: "class-result",
+            //   value: result
+            // });
+          } else {
+            console.log("searched");
+            vscode.commands.executeCommand("vscode.executeWorkspaceSymbolProvider", data.value)
+              .then(
+                function (symbols: vscode.SymbolInformation[]) {
+                  webviewView.webview.postMessage({
+                    type: "class-result",
+                    value: symbols.filter(x => x.kind === 4)
+                  });
+                }
+              );
+          }
+          break;
+        }
+        case "search-method": {
+          vscode.commands.executeCommand("vscode.executeDocumentSymbolProvider", vscode.Uri.file(data.value))
             .then(
-              function (symbols: vscode.SymbolInformation[]) {
-                console.log(symbols.filter(x => x.kind == 4));
-                webviewView.webview.postMessage({
-                  type: "result",
-                  value: symbols
-                });
+              function (symbols: any[]) {
+                // console.log(symbols.filter(x => x.kind == 4));
+                console.log(symbols)
+                // webviewView.webview.postMessage({
+                //   type: "method-result",
+                //   value: symbols
+                // });
               }
-          );
+            );
           break;
         }
         case "hello": {
@@ -92,9 +130,8 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
 					Use a content security policy to only allow loading images from https or from our extension directory,
 					and only allow scripts that have a specific nonce.
         -->
-        <meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${
-          webview.cspSource
-        }; script-src 'nonce-${nonce}';">
+        <meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${webview.cspSource
+      }; script-src 'nonce-${nonce}';">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<link href="${styleResetUri}" rel="stylesheet">
 				<link href="${styleVSCodeUri}" rel="stylesheet">

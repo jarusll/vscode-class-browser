@@ -29,16 +29,16 @@
         {
           "type": "webview",
           "id": "vs-class-browser",
-          "name": "VSTodo",
+          "name": "Browser",
           "icon": "media/checklist.svg",
-          "contextualTitle": "VSTodo"
+          "contextualTitle": ""
         }
       ]
     },
     "commands": [
       {
         "command": "vstodo.refresh",
-        "category": "VSTodo",
+        "category": "ClassBrowser",
         "title": "Refresh"
       }
     ]
