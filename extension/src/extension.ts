@@ -1,11 +1,11 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
-import { SidebarProvider } from "./SidebarProvider";
+import { ClassBrowserProvider } from "./ClassBrowserProvider";
 
 export function activate(context: vscode.ExtensionContext) {
 
-  const sidebarProvider = new SidebarProvider(context.extensionUri);
+  const sidebarProvider = new ClassBrowserProvider(context.extensionUri);
 
   // const item = vscode.window.createStatusBarItem(
   //   vscode.StatusBarAlignment.Right
@@ -15,14 +15,14 @@ export function activate(context: vscode.ExtensionContext) {
   // item.show();
 
   context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider("vstodo-sidebar", sidebarProvider)
+    vscode.window.registerWebviewViewProvider("vs-class-browser", sidebarProvider)
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand("vstodo.refresh", async () => {
       await vscode.commands.executeCommand("workbench.action.closeSidebar");
       await vscode.commands.executeCommand(
-        "workbench.view.extension.vstodo-sidebar-view"
+        "workbench.view.extension.vs-class-browser-view"
       );
     })
   );

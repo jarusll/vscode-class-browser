@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { getNonce } from "./getNonce";
 
-export class SidebarProvider implements vscode.WebviewViewProvider {
+export class ClassBrowserProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
   _doc?: vscode.TextDocument;
 
@@ -21,6 +21,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
+        case "hello": {
+          vscode.window.showInformationMessage(data.value);
+          break;
+        }
         case "onInfo": {
           if (!data.value) {
             return;

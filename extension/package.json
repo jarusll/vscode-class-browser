@@ -11,24 +11,24 @@
   ],
   "activationEvents": [
     "onCommand:vstodo.refresh",
-    "onView:vstodo-sidebar"
+    "onView:vs-class-browser"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "vstodo-sidebar-view",
+          "id": "vs-class-browser-view",
           "title": "Class Browser",
           "icon": "media/checklist.svg"
         }
       ]
     },
     "views": {
-      "vstodo-sidebar-view": [
+      "vs-class-browser-view": [
         {
           "type": "webview",
-          "id": "vstodo-sidebar",
+          "id": "vs-class-browser",
           "name": "VSTodo",
           "icon": "media/checklist.svg",
           "contextualTitle": "VSTodo"
