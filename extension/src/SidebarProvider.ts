@@ -1,8 +1,5 @@
 import * as vscode from "vscode";
-import { authenticate } from "./authenticate";
-import { apiBaseUrl } from "./constants";
 import { getNonce } from "./getNonce";
-import { TokenManager } from "./TokenManager";
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
@@ -24,26 +21,6 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
-        case "logout": {
-          TokenManager.setToken("");
-          break;
-        }
-        case "authenticate": {
-          authenticate(() => {
-            webviewView.webview.postMessage({
-              type: "token",
-              value: TokenManager.getToken(),
-            });
-          });
-          break;
-        }
-        case "get-token": {
-          webviewView.webview.postMessage({
-            type: "token",
-            value: TokenManager.getToken(),
-          });
-          break;
-        }
         case "onInfo": {
           if (!data.value) {
             return;
@@ -101,7 +78,6 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         <link href="${styleMainUri}" rel="stylesheet">
         <script nonce="${nonce}">
           const tsvscode = acquireVsCodeApi();
-          const apiBaseUrl = ${JSON.stringify(apiBaseUrl)}
         </script>
 			</head>
       <body>
