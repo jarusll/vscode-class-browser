@@ -19,8 +19,27 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
+    // this is how you send messages to webview
+    // webviewView.webview.postMessage({
+    //   type: "token",
+    //   value: TokenManager.getToken(),
+    // });
+
     webviewView.webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
+        case "search": {
+          vscode.commands.executeCommand("vscode.executeWorkspaceSymbolProvider", data.value)
+            .then(
+              function (symbols: vscode.SymbolInformation[]) {
+                console.log(symbols.filter(x => x.kind == 4));
+                webviewView.webview.postMessage({
+                  type: "result",
+                  value: symbols
+                });
+              }
+          );
+          break;
+        }
         case "hello": {
           vscode.window.showInformationMessage(data.value);
           break;
