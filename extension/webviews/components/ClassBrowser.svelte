@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+import { onMount } from "svelte";
 
-    let classResults: Set<any> = new Set()
+    let classResults: Array<Object> = []
     let searchQuery = ""
 
     onMount(async () => {
@@ -10,21 +10,19 @@
             const message = event.data;
             switch (message.type) {
                 case "class-result": {
-                    // classResults = message.value
-                    // console.log("searched result:", message.value)
-                    message.value.forEach((element: any) => {
-                        console.log("single :", message.value)
-                        classResults.add(element) 
-                    });
+                    classResults = message.value
+                    console.log(classResults)
                     break;
                 }
                 case "partial-class-result": {
-                    // classResults = message.value
-                    console.log("partial :", message.value)
-                    message.value.forEach((element: any) => {
-                        classResults.add(element) 
-                    });
-                    // classResults = classResults.concat(message.value)
+                    console.log("partial", message.value)
+                    // append
+                    classResults = classResults.concat(message.value)
+                    // remove duplicates
+                    classResults = classResults.filter((value: any, index, self) =>
+                        index === self.findIndex((t: any) => (
+                            t.name === value.name
+                        )))
                     break;
                 }
             }
@@ -50,17 +48,31 @@
         post({type: "search-method", value: query})
     }
 
+    function open(query: String){
+        post({type: "open", value: query})
+    }
+
 </script>
 
 <div class="main">
-<input bind:value={searchQuery} on:input={() => searchClass(searchQuery)} class="query-input"/>
+<input bind:value={searchQuery} on:input={() => {
+    if (searchQuery === "*" || searchQuery === "") 
+        searchClass(searchQuery)
+    else if (searchQuery.length > 2) 
+        searchClass(searchQuery)
+}} class="query-input"/>
 <div class="browse">
 <ul class="class-browse">
-	{#each Array.from(classResults.values()) as result}
+	{#each classResults as result}
 		<li>
             <button class="symbol" on:click={() => {
                 console.log(result)
-                // searchMethod(result.location.uri.path)
+                // open(result.location.range[0])
+                post({
+                    type: "open",
+                    value: result.location.uri.path,
+                    position: result.location.range[0]
+                })
             }}>
                 {result.name}
             </button>
@@ -87,13 +99,4 @@
     .symbol:hover {
         background-color: rgb(59, 125, 168);
     }
-    /* .browse {
-        height: 80vh;
-    }
-    .class-browse {
-        max-height: 40vh;
-    }
-    .method-browse {
-        max-height: 40vh;
-    } */
 </style>

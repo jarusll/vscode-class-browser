@@ -28,16 +28,17 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
     webviewView.webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
         case "search-class": {
-          console.log("data value", data.value);
           if (data.value === "*") {
-            console.log("everything");
-            let result: any[] = []
+            let result: Array<any> = []
             const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
             alphabet.forEach(x => {
-              console.log(x.toString());
               vscode.commands.executeCommand("vscode.executeWorkspaceSymbolProvider", x.toString())
                 .then(
                   function (symbols: vscode.SymbolInformation[]) {
+                    // symbols.filter(item => item.kind === 4)
+                    // .forEach(item => {
+                    //   result.push(item);
+                    // });
                     webviewView.webview.postMessage({
                       type: "partial-class-result",
                       value: symbols.filter(item => item.kind === 4)
@@ -45,13 +46,12 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
                   }
                 );
             });
-            // console.log("result", result)
+            // console.log("*", result);
             // webviewView.webview.postMessage({
-            //   type: "class-result",
+            //   type: "partial-class-result",
             //   value: result
             // });
           } else {
-            console.log("searched");
             vscode.commands.executeCommand("vscode.executeWorkspaceSymbolProvider", data.value)
               .then(
                 function (symbols: vscode.SymbolInformation[]) {
@@ -64,16 +64,21 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
           }
           break;
         }
+        case "open": {
+          console.log(data.value)
+          const openPath = vscode.Uri.file(data.value);
+          vscode.workspace.openTextDocument(openPath).then(doc => {
+              vscode.window.showTextDocument(doc, vscode.ViewColumn.One);
+              const myPos = new vscode.Position(data.position.line, data.position.character);     // I think you know how to get the values, let us know if you don't
+              vscode.window.activeTextEditor!.selections = [new vscode.Selection(myPos, myPos)];
+              vscode.window.activeTextEditor!.revealRange(new vscode.Range(myPos, myPos));
+          });
+        }
+        break;
         case "search-method": {
           vscode.commands.executeCommand("vscode.executeDocumentSymbolProvider", vscode.Uri.file(data.value))
             .then(
               function (symbols: any[]) {
-                // console.log(symbols.filter(x => x.kind == 4));
-                console.log(symbols)
-                // webviewView.webview.postMessage({
-                //   type: "method-result",
-                //   value: symbols
-                // });
               }
             );
           break;
