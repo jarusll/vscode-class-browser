@@ -1,7 +1,27 @@
 <script lang="ts">
 import { onMount } from "svelte";
+    interface VSCodeSymbol {
+        name: string;
+        kind: number;
+        containerName: string;
+        location: {
+            uri: {
+                path: string
+            },
+            range: [
+                [
+                    line: number,
+                    character: number
+                ],
+                [
+                    line: number,
+                    character: number
+                ]
+            ];
+        };
+    };
 
-    let classResults: Array<Object> = []
+    let classResults: Array<VSCodeSymbol> = []
     let searchQuery = ""
 
     onMount(async () => {
@@ -26,12 +46,12 @@ import { onMount } from "svelte";
             }
         });
 
-        setTimeout(() => searchClass("*"), 3000)
+        setTimeout(() => searchAll(), 3000)
         // this is used to send message to provider
         // tsvscode.postMessage({ type: "get-token", value: undefined });
     });
 
-    function post(message: {type: String, value: String}) {
+    function post(message: {type: String, value: any}) {
         tsvscode.postMessage(message);
     }
 
@@ -47,6 +67,10 @@ import { onMount } from "svelte";
         post({type: "search-method", value: query})
     }
 
+    function searchAll() {
+        post({type: "search-all", value: searchQuery})
+    }
+
     function open(query: String){
         post({type: "open", value: query})
     }
@@ -55,8 +79,8 @@ import { onMount } from "svelte";
 
 <div class="main">
 <input bind:value={searchQuery} on:input={() => {
-    if (searchQuery === "*" || searchQuery === "") 
-        searchClass(searchQuery)
+    if (searchQuery === "*") 
+        searchAll()
     else if (searchQuery.length > 2) 
         searchClass(searchQuery)
 }} class="query-input"/>
@@ -69,8 +93,10 @@ import { onMount } from "svelte";
                 on:click={() => {
                 post({
                     type: "open",
-                    value: classType?.location?.uri?.path,
-                    position: classType?.location?.range[0]
+                    value: {
+                        path: classType?.location?.uri?.path,
+                        position: classType?.location?.range[0]
+                    }
                 })
             }}>
                 <span class="class">{classType.name}</span>

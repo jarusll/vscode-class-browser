@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { getNonce } from "./getNonce";
-import { WorkspaceSymbols } from "./WorkspaceSymbols";
+import { WorkspaceSymbolsFacade } from "./WorkspaceSymbolsFacade";
 
 export class ClassBrowserProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
@@ -28,54 +28,42 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
-        case "search-class": {
-          if (data.value === "*") {
-            let result: Array<any> = []
-            const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-            alphabet.forEach(character => {
-              WorkspaceSymbols.fetch(character.toString())
-                .then(
-                  function (symbols: vscode.SymbolInformation[]) {
-                    webviewView.webview.postMessage({
-                      type: "partial-class-result",
-                      value: symbols.filter(item => item.kind === 4)
-                    });
-                  });
-            });
-          } else {
-            vscode.commands.executeCommand("vscode.executeWorkspaceSymbolProvider", data.value)
+        case "search-all":
+          let result: Array<any> = [];
+          const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+          alphabet.forEach(character => {
+            WorkspaceSymbolsFacade.fetch(character.toString())
               .then(
                 function (symbols: vscode.SymbolInformation[]) {
                   webviewView.webview.postMessage({
-                    type: "class-result",
-                    value: symbols.filter(x => x.kind === 4)
+                    type: "partial-class-result",
+                    value: symbols.filter(item => item.kind === 4)
                   });
-                }
-              );
-          }
+                });
+          });
           break;
-        }
+        case "search-class":
+          WorkspaceSymbolsFacade.fetch(data.value)
+            .then(
+              function (symbols: vscode.SymbolInformation[]) {
+                webviewView.webview.postMessage({
+                  type: "class-result",
+                  value: symbols.filter(item => item.kind === 4)
+                });
+              });
+          break;
         case "open": {
-          console.log(data.value)
-          const openPath = vscode.Uri.file(data.value);
+          const openPath = vscode.Uri.file(data.value.path);
           vscode.workspace.openTextDocument(openPath).then(doc => {
             vscode.window.showTextDocument(doc, vscode.ViewColumn.One);
-            const myPos = new vscode.Position(data.position.line, data.position.character);     // I think you know how to get the values, let us know if you don't
+            const myPos = new vscode.Position(data.value.position.line, data.value.position.character);     // I think you know how to get the values, let us know if you don't
             vscode.window.activeTextEditor!.selections = [new vscode.Selection(myPos, myPos)];
             vscode.window.activeTextEditor!.revealRange(new vscode.Range(myPos, myPos));
           });
         }
           break;
         case "search-method": {
-          vscode.commands.executeCommand("vscode.executeDocumentSymbolProvider", vscode.Uri.file(data.value))
-            .then(
-              function (symbols: any[]) {
-              }
-            );
-          break;
-        }
-        case "hello": {
-          vscode.window.showInformationMessage(data.value);
+          // TODO implement
           break;
         }
         case "onInfo": {
