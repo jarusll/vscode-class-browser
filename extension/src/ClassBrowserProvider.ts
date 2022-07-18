@@ -36,7 +36,6 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
     webviewView.webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
         case "search-all":
-          console.log("all");
           let result: Array<any> = [];
           const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
           alphabet.forEach(character => {
