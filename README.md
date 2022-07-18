@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/jarusll/vscode-class-browser/blob/master/extension/media/icon.png?raw=true" />
+  <img src="extension/media/icon.png" />
 </p>
 
 <h2 align="center">
