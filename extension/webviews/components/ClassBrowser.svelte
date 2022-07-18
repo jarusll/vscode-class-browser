@@ -93,7 +93,6 @@ import { onMount } from "svelte";
             <button class="symbol" 
                 title={classType?.containerName}
                 on:click={() => {
-                    console.log(classType)
                 post({
                     type: "open",
                     value: {
