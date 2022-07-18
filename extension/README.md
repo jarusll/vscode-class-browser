@@ -6,8 +6,6 @@ A vscode extension which provides the listing of classes/interfaces/structs.
 
 ![Alt Text](media/showcase.gif)
 
-## Known Issues
-
 ## Release Notes
 ### 0.0.4
 Added color coding to types
