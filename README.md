@@ -1,7 +1,14 @@
-# Class Browser
+<p align="center">
+  <img src="https://github.com/jarusll/vscode-class-browser/blob/master/extension/media/icon.png?raw=true" />
+</p>
 
-A vscode extension which provided the Class browser for all languages. 
-A class browser lists all the classes & its methods globally.
+<h2 align="center">
+Class Browser
+</h2>
+
+![Showcase](extension/media/showcase.gif)
+
+A vscode extension which provides the listing of classes/interfaces/structs.
 
 # Implementation
 Piggybacks on vscode's SymbolProvider.
@@ -11,6 +18,7 @@ Piggybacks on vscode's SymbolProvider.
 - [x] Open the class file and jump to its position
 
 # Todo
-- [ ] Fetch members of selected class(Maybe?)
+- [ ] ~~Fetch members of selected class(Maybe?)~~ Since Outline view is better.
 - [ ] Fetch other types(functions)
+- [ ] Give option to filter out types
 - [ ] UI enhancements(icons, hover labels)
