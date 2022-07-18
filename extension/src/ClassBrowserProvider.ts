@@ -35,10 +35,6 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
               vscode.commands.executeCommand("vscode.executeWorkspaceSymbolProvider", x.toString())
                 .then(
                   function (symbols: vscode.SymbolInformation[]) {
-                    // symbols.filter(item => item.kind === 4)
-                    // .forEach(item => {
-                    //   result.push(item);
-                    // });
                     webviewView.webview.postMessage({
                       type: "partial-class-result",
                       value: symbols.filter(item => item.kind === 4)
@@ -46,11 +42,6 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
                   }
                 );
             });
-            // console.log("*", result);
-            // webviewView.webview.postMessage({
-            //   type: "partial-class-result",
-            //   value: result
-            // });
           } else {
             vscode.commands.executeCommand("vscode.executeWorkspaceSymbolProvider", data.value)
               .then(

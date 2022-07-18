@@ -28,6 +28,7 @@ import { onMount } from "svelte";
             }
         });
 
+        setTimeout(() => searchClass("*"), 3000)
         // this is used to send message to provider
         // tsvscode.postMessage({ type: "get-token", value: undefined });
     });
@@ -63,18 +64,20 @@ import { onMount } from "svelte";
 }} class="query-input"/>
 <div class="browse">
 <ul class="class-browse">
-	{#each classResults as result}
+	{#each classResults as classType}
 		<li>
-            <button class="symbol" on:click={() => {
-                console.log(result)
-                // open(result.location.range[0])
+            <button class="symbol" 
+                title={classType?.containerName}
+                on:click={() => {
+                console.log(classType)
                 post({
                     type: "open",
-                    value: result.location.uri.path,
-                    position: result.location.range[0]
+                    value: classType?.location?.uri?.path,
+                    position: classType?.location?.range[0]
                 })
             }}>
-                {result.name}
+                <span class="class">{classType.name}</span>
+                <span class="container">{classType?.containerName || ""}</span>
             </button>
         </li>
 	{/each}
@@ -92,11 +95,23 @@ import { onMount } from "svelte";
         padding: 0;
         overflow-y: scroll;
     }
+    li {
+        list-style: none;
+    }
     .symbol {
         text-align: left;
-        background-color: rgb(29, 55, 72);
+        background-color: transparent;
+        font-size: 1rem;
     }
     .symbol:hover {
         background-color: rgb(59, 125, 168);
+    }
+    .class {
+        text-align: left;
+    }
+    .container {
+        text-align: right;
+        color: gray;
+        text-overflow: ellipsis;
     }
 </style>
