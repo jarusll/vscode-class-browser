@@ -385,7 +385,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (58:1) {#each classResults as classType}
+    // (70:1) {#each classResults as classType}
     function create_each_block(ctx) {
     	let li;
     	let button;
@@ -398,6 +398,7 @@ var app = (function () {
     	let t2;
     	let button_title_value;
     	let t3;
+    	let li_style_value;
     	let mounted;
     	let dispose;
 
@@ -415,15 +416,16 @@ var app = (function () {
     			span1 = element("span");
     			t2 = text(t2_value);
     			t3 = space();
-    			attr_dev(span0, "class", "class svelte-15wvrcp");
-    			add_location(span0, file, 70, 16, 2185);
-    			attr_dev(span1, "class", "container svelte-15wvrcp");
-    			add_location(span1, file, 71, 16, 2245);
-    			attr_dev(button, "class", "symbol svelte-15wvrcp");
-    			attr_dev(button, "title", button_title_value = /*classType*/ ctx[8]?.containerName);
-    			add_location(button, file, 59, 12, 1793);
-    			attr_dev(li, "class", "svelte-15wvrcp");
-    			add_location(li, file, 58, 2, 1776);
+    			attr_dev(span0, "class", "class svelte-1bwgxy3");
+    			add_location(span0, file, 82, 16, 2518);
+    			attr_dev(span1, "class", "container svelte-1bwgxy3");
+    			add_location(span1, file, 83, 16, 2578);
+    			attr_dev(button, "class", "symbol svelte-1bwgxy3");
+    			attr_dev(button, "title", button_title_value = /*classType*/ ctx[8]?.kind.toString() + " " + /*classType*/ ctx[8]?.name);
+    			add_location(button, file, 71, 12, 2100);
+    			attr_dev(li, "style", li_style_value = `color: ${color(/*classType*/ ctx[8]?.kind.toString())};`);
+    			attr_dev(li, "class", "svelte-1bwgxy3");
+    			add_location(li, file, 70, 2, 2028);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -445,8 +447,12 @@ var app = (function () {
     			if (dirty & /*classResults*/ 1 && t0_value !== (t0_value = /*classType*/ ctx[8].name + "")) set_data_dev(t0, t0_value);
     			if (dirty & /*classResults*/ 1 && t2_value !== (t2_value = (/*classType*/ ctx[8]?.containerName || "") + "")) set_data_dev(t2, t2_value);
 
-    			if (dirty & /*classResults*/ 1 && button_title_value !== (button_title_value = /*classType*/ ctx[8]?.containerName)) {
+    			if (dirty & /*classResults*/ 1 && button_title_value !== (button_title_value = /*classType*/ ctx[8]?.kind.toString() + " " + /*classType*/ ctx[8]?.name)) {
     				attr_dev(button, "title", button_title_value);
+    			}
+
+    			if (dirty & /*classResults*/ 1 && li_style_value !== (li_style_value = `color: ${color(/*classType*/ ctx[8]?.kind.toString())};`)) {
+    				attr_dev(li, "style", li_style_value);
     			}
     		},
     		d: function destroy(detaching) {
@@ -460,7 +466,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(58:1) {#each classResults as classType}",
+    		source: "(70:1) {#each classResults as classType}",
     		ctx
     	});
 
@@ -496,13 +502,13 @@ var app = (function () {
     			}
 
     			attr_dev(input, "class", "query-input");
-    			add_location(input, file, 49, 0, 1467);
-    			attr_dev(ul, "class", "class-browse svelte-15wvrcp");
-    			add_location(ul, file, 56, 0, 1713);
+    			add_location(input, file, 61, 0, 1719);
+    			attr_dev(ul, "class", "class-browse svelte-1bwgxy3");
+    			add_location(ul, file, 68, 0, 1965);
     			attr_dev(div0, "class", "browse");
-    			add_location(div0, file, 55, 0, 1692);
+    			add_location(div0, file, 67, 0, 1944);
     			attr_dev(div1, "class", "main");
-    			add_location(div1, file, 48, 0, 1448);
+    			add_location(div1, file, 60, 0, 1700);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -534,7 +540,7 @@ var app = (function () {
     				set_input_value(input, /*searchQuery*/ ctx[2]);
     			}
 
-    			if (dirty & /*classResults, post*/ 1) {
+    			if (dirty & /*color, classResults, post*/ 1) {
     				each_value = /*classResults*/ ctx[0];
     				validate_each_argument(each_value);
     				let i;
@@ -598,6 +604,19 @@ var app = (function () {
 
     function open(query) {
     	post({ type: "open", value: query });
+    }
+
+    function color(kind) {
+    	switch (kind) {
+    		case "Interface":
+    			return "yellow";
+    		case "Class":
+    			return "aqua";
+    		case "Struct":
+    			return "orange";
+    		default:
+    			return "white";
+    	}
     }
 
     function instance($$self, $$props, $$invalidate) {
@@ -681,7 +700,8 @@ var app = (function () {
     		searchClass,
     		searchMethod,
     		searchAll,
-    		open
+    		open,
+    		color
     	});
 
     	$$self.$inject_state = $$props => {

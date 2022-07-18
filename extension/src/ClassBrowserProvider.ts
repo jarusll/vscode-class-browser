@@ -67,6 +67,11 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
             const myPos = new vscode.Position(data.value.position.line, data.value.position.character);     // I think you know how to get the values, let us know if you don't
             vscode.window.activeTextEditor!.selections = [new vscode.Selection(myPos, myPos)];
             vscode.window.activeTextEditor!.revealRange(new vscode.Range(myPos, myPos));
+            setTimeout(() => {
+              vscode.commands.executeCommand(
+                "outline.focus"
+              );
+            }, 1000);
           });
         }
           break;

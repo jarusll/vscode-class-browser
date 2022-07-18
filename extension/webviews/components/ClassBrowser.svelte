@@ -77,6 +77,19 @@ import { onMount } from "svelte";
         post({type: "open", value: query})
     }
 
+    function color(kind: string): string{
+        switch(kind){
+        case "Interface":
+            return "yellow"
+        case "Class":
+            return "aqua"
+        case "Struct":
+            return "orange"
+        default:
+            return "white"
+        }
+    }
+
 </script>
 
 <div class="main">
@@ -89,9 +102,9 @@ import { onMount } from "svelte";
 <div class="browse">
 <ul class="class-browse">
 	{#each classResults as classType}
-		<li>
+		<li style={`color: ${color(classType?.kind.toString())};`}>
             <button class="symbol" 
-                title={classType?.containerName}
+                title={classType?.kind.toString() + " " + classType?.name}
                 on:click={() => {
                 post({
                     type: "open",
@@ -116,7 +129,7 @@ import { onMount } from "svelte";
         list-style-position: inside;
     }
     li {
-        color: rgb(59, 125, 168);
+        color: rgb(173, 40, 42);
     }
     .symbol {
         text-align: left;
