@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { getNonce } from "./getNonce";
+import { WorkspaceSymbols } from "./WorkspaceSymbols";
 
 export class ClassBrowserProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
@@ -31,16 +32,15 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
           if (data.value === "*") {
             let result: Array<any> = []
             const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-            alphabet.forEach(x => {
-              vscode.commands.executeCommand("vscode.executeWorkspaceSymbolProvider", x.toString())
+            alphabet.forEach(character => {
+              WorkspaceSymbols.fetch(character.toString())
                 .then(
                   function (symbols: vscode.SymbolInformation[]) {
                     webviewView.webview.postMessage({
                       type: "partial-class-result",
                       value: symbols.filter(item => item.kind === 4)
                     });
-                  }
-                );
+                  });
             });
           } else {
             vscode.commands.executeCommand("vscode.executeWorkspaceSymbolProvider", data.value)
@@ -59,13 +59,13 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
           console.log(data.value)
           const openPath = vscode.Uri.file(data.value);
           vscode.workspace.openTextDocument(openPath).then(doc => {
-              vscode.window.showTextDocument(doc, vscode.ViewColumn.One);
-              const myPos = new vscode.Position(data.position.line, data.position.character);     // I think you know how to get the values, let us know if you don't
-              vscode.window.activeTextEditor!.selections = [new vscode.Selection(myPos, myPos)];
-              vscode.window.activeTextEditor!.revealRange(new vscode.Range(myPos, myPos));
+            vscode.window.showTextDocument(doc, vscode.ViewColumn.One);
+            const myPos = new vscode.Position(data.position.line, data.position.character);     // I think you know how to get the values, let us know if you don't
+            vscode.window.activeTextEditor!.selections = [new vscode.Selection(myPos, myPos)];
+            vscode.window.activeTextEditor!.revealRange(new vscode.Range(myPos, myPos));
           });
         }
-        break;
+          break;
         case "search-method": {
           vscode.commands.executeCommand("vscode.executeDocumentSymbolProvider", vscode.Uri.file(data.value))
             .then(

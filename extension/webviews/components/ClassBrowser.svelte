@@ -11,11 +11,9 @@ import { onMount } from "svelte";
             switch (message.type) {
                 case "class-result": {
                     classResults = message.value
-                    console.log(classResults)
                     break;
                 }
                 case "partial-class-result": {
-                    console.log("partial", message.value)
                     // append
                     classResults = classResults.concat(message.value)
                     // remove duplicates
@@ -69,7 +67,6 @@ import { onMount } from "svelte";
             <button class="symbol" 
                 title={classType?.containerName}
                 on:click={() => {
-                console.log(classType)
                 post({
                     type: "open",
                     value: classType?.location?.uri?.path,
