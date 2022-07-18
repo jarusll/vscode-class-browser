@@ -3,6 +3,10 @@
   "displayName": "Class Browser",
   "description": "Smalltalk styled class browser",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jarusll/vscode-class-browser"
+  },
   "engines": {
     "vscode": "^1.52.0"
   },
