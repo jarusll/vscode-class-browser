@@ -22,6 +22,7 @@ import { onMount } from "svelte";
     };
 
     let classResults: Array<VSCodeSymbol> = []
+    let searchQueryInput: any
     let searchQuery = ""
 
     onMount(async () => {
@@ -46,9 +47,10 @@ import { onMount } from "svelte";
             }
         });
 
-        setTimeout(() => searchAll(), 3000)
+        // setTimeout(() => searchAll(), 3000)
         // this is used to send message to provider
         // tsvscode.postMessage({ type: "get-token", value: undefined });
+        // searchQueryInput.focus()
     });
 
     function post(message: {type: String, value: any}) {
@@ -78,10 +80,10 @@ import { onMount } from "svelte";
 </script>
 
 <div class="main">
-<input bind:value={searchQuery} on:input={() => {
+<input bind:this={searchQueryInput} bind:value={searchQuery} on:input={() => {
     if (searchQuery === "*") 
         searchAll()
-    else if (searchQuery.length > 2) 
+    else if (searchQuery.length > 1) 
         searchClass(searchQuery)
 }} class="query-input"/>
 <div class="browse">
@@ -91,6 +93,7 @@ import { onMount } from "svelte";
             <button class="symbol" 
                 title={classType?.containerName}
                 on:click={() => {
+                    console.log(classType)
                 post({
                     type: "open",
                     value: {
@@ -110,21 +113,17 @@ import { onMount } from "svelte";
 
 <style>
     ul {
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin: 0;
-        padding: 0;
-        overflow-y: scroll;
+        list-style-type: square;
+        list-style-position: inside;
     }
     li {
-        list-style: none;
+        color: rgb(59, 125, 168);
     }
     .symbol {
         text-align: left;
         background-color: transparent;
         font-size: 1rem;
+        width: max-content;
     }
     .symbol:hover {
         background-color: rgb(59, 125, 168);

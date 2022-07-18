@@ -37,9 +37,14 @@
     },
     "commands": [
       {
-        "command": "vstodo.refresh",
+        "command": "search-class-browser",
         "category": "ClassBrowser",
-        "title": "Refresh"
+        "title": "Search"
+      },
+      {
+        "command": "open-class-browser",
+        "category": "ClassBrowser",
+        "title": "Open"
       }
     ]
   },

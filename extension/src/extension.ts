@@ -19,8 +19,16 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("vstodo.refresh", async () => {
+    vscode.commands.registerCommand("search-class-browser", async () => {
       await vscode.commands.executeCommand("workbench.action.closeSidebar");
+      await vscode.commands.executeCommand(
+        "workbench.view.extension.vs-class-browser-view"
+      );
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("open-class-browser", async () => {
       await vscode.commands.executeCommand(
         "workbench.view.extension.vs-class-browser-view"
       );

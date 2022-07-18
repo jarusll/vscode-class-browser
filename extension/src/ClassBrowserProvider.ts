@@ -26,9 +26,17 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
     //   value: TokenManager.getToken(),
     // });
 
+    //#region predicates
+    const isInterface = (x: any) => x.kind === vscode.SymbolKind.Interface;
+    const isStruct = (x: any) => x.kind === vscode.SymbolKind.Struct;
+    const isClass = (x: any) => x.kind === vscode.SymbolKind.Class;
+    const any = (x: any, ...predicates: any[]) => predicates.some(x);
+    //#endregion predicates 
+
     webviewView.webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
         case "search-all":
+          console.log("all");
           let result: Array<any> = [];
           const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
           alphabet.forEach(character => {
@@ -37,7 +45,7 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
                 function (symbols: vscode.SymbolInformation[]) {
                   webviewView.webview.postMessage({
                     type: "partial-class-result",
-                    value: symbols.filter(item => item.kind === 4)
+                    value: symbols.filter(x => isInterface(x) || isStruct(x) || isClass(x))
                   });
                 });
           });
@@ -48,7 +56,8 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
               function (symbols: vscode.SymbolInformation[]) {
                 webviewView.webview.postMessage({
                   type: "class-result",
-                  value: symbols.filter(item => item.kind === 4)
+                  value: symbols.filter(x => isInterface(x) || isStruct(x) || isClass(x))
+                  // value: symbols.filter(item => item.kind === 4)
                 });
               });
           break;
