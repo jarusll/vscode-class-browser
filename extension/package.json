@@ -1,7 +1,8 @@
 {
   "name": "class-browser",
   "displayName": "Class Browser",
-  "description": "Smalltalk styled class browser",
+  "description": "Class Browser",
+  "publisher": "Suraj Yadav",
   "version": "0.0.1",
   "repository": {
     "type": "git",
@@ -15,7 +16,6 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:vstodo.refresh",
     "onView:vs-class-browser"
   ],
   "main": "./dist/extension.js",
