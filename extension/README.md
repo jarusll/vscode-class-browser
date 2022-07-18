@@ -9,6 +9,14 @@ A vscode extension which provides the listing of classes/interfaces/structs.
 ## Known Issues
 
 ## Release Notes
+### 0.0.4
+Added color coding to types
+Interface - Yellow
+Class - Blue
+Struct - Red
+
+When an item is clicked, the focus will shift to outline view after 1 second.
+
 ### 0.0.3
 Added gif & removed console.logs
 
