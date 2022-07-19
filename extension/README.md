@@ -7,6 +7,9 @@ A vscode extension which provides the listing of classes/interfaces/structs.
 ![Alt Text](https://github.com/jarusll/vscode-class-browser/blob/master/extension/media/showcase.gif?raw=true)
 
 ## Release Notes
+### 0.0.5
+Fix showcase path
+
 ### 0.0.4
 Added color coding to types
 Interface - Yellow
