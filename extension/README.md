@@ -4,7 +4,7 @@ A vscode extension which provides the listing of classes/interfaces/structs.
 
 # Showcase
 
-![Alt Text](media/showcase.gif)
+![Alt Text](https://github.com/jarusll/vscode-class-browser/blob/master/extension/media/showcase.gif?raw=true)
 
 ## Release Notes
 ### 0.0.4
