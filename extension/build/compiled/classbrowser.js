@@ -385,7 +385,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (70:1) {#each classResults as classType}
+    // (73:1) {#each classResults as classType}
     function create_each_block(ctx) {
     	let li;
     	let button;
@@ -417,15 +417,15 @@ var app = (function () {
     			t2 = text(t2_value);
     			t3 = space();
     			attr_dev(span0, "class", "class svelte-1bwgxy3");
-    			add_location(span0, file, 82, 16, 2518);
+    			add_location(span0, file, 85, 16, 2569);
     			attr_dev(span1, "class", "container svelte-1bwgxy3");
-    			add_location(span1, file, 83, 16, 2578);
+    			add_location(span1, file, 86, 16, 2629);
     			attr_dev(button, "class", "symbol svelte-1bwgxy3");
     			attr_dev(button, "title", button_title_value = /*classType*/ ctx[8]?.kind.toString() + " " + /*classType*/ ctx[8]?.name);
-    			add_location(button, file, 71, 12, 2100);
+    			add_location(button, file, 74, 12, 2151);
     			attr_dev(li, "style", li_style_value = `color: ${color(/*classType*/ ctx[8]?.kind.toString())};`);
     			attr_dev(li, "class", "svelte-1bwgxy3");
-    			add_location(li, file, 70, 2, 2028);
+    			add_location(li, file, 73, 2, 2079);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -466,7 +466,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(70:1) {#each classResults as classType}",
+    		source: "(73:1) {#each classResults as classType}",
     		ctx
     	});
 
@@ -502,13 +502,13 @@ var app = (function () {
     			}
 
     			attr_dev(input, "class", "query-input");
-    			add_location(input, file, 61, 0, 1719);
+    			add_location(input, file, 64, 0, 1770);
     			attr_dev(ul, "class", "class-browse svelte-1bwgxy3");
-    			add_location(ul, file, 68, 0, 1965);
+    			add_location(ul, file, 71, 0, 2016);
     			attr_dev(div0, "class", "browse");
-    			add_location(div0, file, 67, 0, 1944);
+    			add_location(div0, file, 70, 0, 1995);
     			attr_dev(div1, "class", "main");
-    			add_location(div1, file, 60, 0, 1700);
+    			add_location(div1, file, 63, 0, 1751);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -591,11 +591,14 @@ var app = (function () {
     }
 
     function search(queryAction) {
-    	post(queryAction);
+    	post({
+    		type: "search-" + queryAction.type,
+    		value: queryAction.value
+    	});
     }
 
     function searchClass(query) {
-    	post({ type: "search-class", value: query });
+    	search("class");
     }
 
     function searchMethod(query) {
@@ -677,7 +680,7 @@ var app = (function () {
     	}
 
     	const input_handler = () => {
-    		if (searchQuery === "*") searchAll(); else if (searchQuery.length > 1) searchClass(searchQuery);
+    		if (searchQuery === "*") searchAll(); else if (searchQuery.length > 1) searchClass();
     	};
 
     	const click_handler = classType => {

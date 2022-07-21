@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { alphabets } from "./constants/alphabets";
 import { getNonce } from "./getNonce";
 import { WorkspaceSymbolsFacade } from "./WorkspaceSymbolsFacade";
 
@@ -31,18 +32,17 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
     const isStruct = (x: any) => x.kind === vscode.SymbolKind.Struct;
     const isClass = (x: any) => x.kind === vscode.SymbolKind.Class;
     const any = (x: any, ...predicates: any[]) => predicates.some(x);
+    const connectedWebview = webviewView.webview;
     //#endregion predicates 
 
-    webviewView.webview.onDidReceiveMessage(async (data) => {
+    connectedWebview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
         case "search-all":
-          let result: Array<any> = [];
-          const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-          alphabet.forEach(character => {
+          alphabets.forEach(character => {
             WorkspaceSymbolsFacade.fetch(character.toString())
               .then(
                 function (symbols: vscode.SymbolInformation[]) {
-                  webviewView.webview.postMessage({
+                  connectedWebview.postMessage({
                     type: "partial-class-result",
                     value: symbols.filter(x => isInterface(x) || isStruct(x) || isClass(x))
                   });
@@ -53,7 +53,7 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
           WorkspaceSymbolsFacade.fetch(data.value)
             .then(
               function (symbols: vscode.SymbolInformation[]) {
-                webviewView.webview.postMessage({
+                connectedWebview.postMessage({
                   type: "class-result",
                   value: symbols.filter(x => isInterface(x) || isStruct(x) || isClass(x))
                   // value: symbols.filter(item => item.kind === 4)
@@ -62,16 +62,19 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
           break;
         case "open": {
           const openPath = vscode.Uri.file(data.value.path);
-          vscode.workspace.openTextDocument(openPath).then(doc => {
-            vscode.window.showTextDocument(doc, vscode.ViewColumn.One);
+          vscode.workspace.openTextDocument(openPath).then(async (doc) => {
+            await vscode.window.showTextDocument(doc, vscode.ViewColumn.One);
             const myPos = new vscode.Position(data.value.position.line, data.value.position.character);     // I think you know how to get the values, let us know if you don't
             vscode.window.activeTextEditor!.selections = [new vscode.Selection(myPos, myPos)];
-            vscode.window.activeTextEditor!.revealRange(new vscode.Range(myPos, myPos));
-            setTimeout(() => {
-              vscode.commands.executeCommand(
-                "outline.focus"
-              );
-            }, 1000);
+            await vscode.window.activeTextEditor!.revealRange(new vscode.Range(myPos, myPos));
+            await vscode.commands.executeCommand(
+              "outline.focus"
+            );
+            // setTimeout(() => {
+            //   vscode.commands.executeCommand(
+            //     "outline.focus"
+            //   );
+            // }, 1000);
           });
         }
           break;

@@ -58,11 +58,14 @@ import { onMount } from "svelte";
     }
 
     function search(queryAction: {type: String, value: any}) {
-        post(queryAction)
+        post({
+            type: "search-" + queryAction.type,
+            value: queryAction.value
+        })
     }
 
     function searchClass(query: String){
-        post({type: "search-class", value: query})
+        search("class", query)
     }
 
     function searchMethod(query: String){
