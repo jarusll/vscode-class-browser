@@ -381,13 +381,13 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[11] = list[i];
+    	child_ctx[12] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[14] = list[i];
+    	child_ctx[15] = list[i];
     	return child_ctx;
     }
 
@@ -397,11 +397,15 @@ var app = (function () {
     	let input;
     	let t0;
     	let label;
-    	let t1_value = /*option*/ ctx[14].label + "";
+    	let t1_value = /*option*/ ctx[15].label + "";
     	let t1;
     	let t2;
     	let mounted;
     	let dispose;
+
+    	function change_handler() {
+    		return /*change_handler*/ ctx[8](/*option*/ ctx[15]);
+    	}
 
     	const block = {
     		c: function create() {
@@ -412,16 +416,16 @@ var app = (function () {
     			t1 = text(t1_value);
     			t2 = space();
     			attr_dev(input, "type", "radio");
-    			attr_dev(input, "id", /*option*/ ctx[14].value);
-    			input.__value = /*option*/ ctx[14].value;
+    			attr_dev(input, "id", /*option*/ ctx[15].value);
+    			input.__value = /*option*/ ctx[15].value;
     			input.value = input.__value;
-    			attr_dev(input, "class", "input-type svelte-1fejiq4");
-    			/*$$binding_groups*/ ctx[9][0].push(input);
-    			add_location(input, file, 118, 8, 2993);
-    			attr_dev(label, "for", /*option*/ ctx[14].value);
-    			add_location(label, file, 120, 8, 3118);
-    			attr_dev(div, "class", "type svelte-1fejiq4");
-    			add_location(div, file, 117, 4, 2966);
+    			attr_dev(input, "class", "input-type svelte-x74moc");
+    			/*$$binding_groups*/ ctx[10][0].push(input);
+    			add_location(input, file, 118, 8, 2912);
+    			attr_dev(label, "for", /*option*/ ctx[15].value);
+    			add_location(label, file, 124, 8, 3154);
+    			attr_dev(div, "class", "type svelte-x74moc");
+    			add_location(div, file, 117, 4, 2885);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -433,20 +437,26 @@ var app = (function () {
     			append_dev(div, t2);
 
     			if (!mounted) {
-    				dispose = listen_dev(input, "change", /*input_change_handler*/ ctx[8]);
+    				dispose = [
+    					listen_dev(input, "change", change_handler, false, false, false),
+    					listen_dev(input, "change", /*input_change_handler*/ ctx[9])
+    				];
+
     				mounted = true;
     			}
     		},
-    		p: function update(ctx, dirty) {
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+
     			if (dirty & /*searchType*/ 2) {
     				input.checked = input.__value === /*searchType*/ ctx[1];
     			}
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
-    			/*$$binding_groups*/ ctx[9][0].splice(/*$$binding_groups*/ ctx[9][0].indexOf(input), 1);
+    			/*$$binding_groups*/ ctx[10][0].splice(/*$$binding_groups*/ ctx[10][0].indexOf(input), 1);
     			mounted = false;
-    			dispose();
+    			run_all(dispose);
     		}
     	};
 
@@ -461,16 +471,16 @@ var app = (function () {
     	return block;
     }
 
-    // (128:1) {#each searchResults as classType}
+    // (133:1) {#each searchResults as classType}
     function create_each_block(ctx) {
     	let li;
     	let button;
     	let span0;
-    	let t0_value = /*classType*/ ctx[11].name + "";
+    	let t0_value = /*classType*/ ctx[12].name + "";
     	let t0;
     	let t1;
     	let span1;
-    	let t2_value = (/*classType*/ ctx[11]?.containerName || "") + "";
+    	let t2_value = (/*classType*/ ctx[12]?.containerName || "") + "";
     	let t2;
     	let button_title_value;
     	let t3;
@@ -479,7 +489,7 @@ var app = (function () {
     	let dispose;
 
     	function click_handler() {
-    		return /*click_handler*/ ctx[10](/*classType*/ ctx[11]);
+    		return /*click_handler*/ ctx[11](/*classType*/ ctx[12]);
     	}
 
     	const block = {
@@ -492,16 +502,15 @@ var app = (function () {
     			span1 = element("span");
     			t2 = text(t2_value);
     			t3 = space();
-    			attr_dev(span0, "class", "class svelte-1fejiq4");
-    			add_location(span0, file, 140, 16, 3769);
-    			attr_dev(span1, "class", "container svelte-1fejiq4");
-    			add_location(span1, file, 141, 16, 3829);
-    			attr_dev(button, "class", "symbol svelte-1fejiq4");
-    			attr_dev(button, "title", button_title_value = /*classType*/ ctx[11]?.kind.toString() + " " + /*classType*/ ctx[11]?.name);
-    			add_location(button, file, 129, 12, 3351);
-    			attr_dev(li, "style", li_style_value = `color: ${color(/*classType*/ ctx[11]?.kind.toString())};`);
-    			attr_dev(li, "class", "svelte-1fejiq4");
-    			add_location(li, file, 128, 2, 3279);
+    			attr_dev(span0, "class", "class svelte-x74moc");
+    			add_location(span0, file, 145, 16, 3812);
+    			attr_dev(span1, "class", "container svelte-x74moc");
+    			add_location(span1, file, 146, 16, 3872);
+    			attr_dev(button, "class", "symbol svelte-x74moc");
+    			attr_dev(button, "title", button_title_value = /*classType*/ ctx[12]?.kind.toString() + " " + /*classType*/ ctx[12]?.name);
+    			add_location(button, file, 134, 12, 3394);
+    			attr_dev(li, "style", li_style_value = `color: ${color(/*classType*/ ctx[12]?.kind.toString())};`);
+    			add_location(li, file, 133, 2, 3322);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -520,14 +529,14 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*searchResults*/ 1 && t0_value !== (t0_value = /*classType*/ ctx[11].name + "")) set_data_dev(t0, t0_value);
-    			if (dirty & /*searchResults*/ 1 && t2_value !== (t2_value = (/*classType*/ ctx[11]?.containerName || "") + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*searchResults*/ 1 && t0_value !== (t0_value = /*classType*/ ctx[12].name + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*searchResults*/ 1 && t2_value !== (t2_value = (/*classType*/ ctx[12]?.containerName || "") + "")) set_data_dev(t2, t2_value);
 
-    			if (dirty & /*searchResults*/ 1 && button_title_value !== (button_title_value = /*classType*/ ctx[11]?.kind.toString() + " " + /*classType*/ ctx[11]?.name)) {
+    			if (dirty & /*searchResults*/ 1 && button_title_value !== (button_title_value = /*classType*/ ctx[12]?.kind.toString() + " " + /*classType*/ ctx[12]?.name)) {
     				attr_dev(button, "title", button_title_value);
     			}
 
-    			if (dirty & /*searchResults*/ 1 && li_style_value !== (li_style_value = `color: ${color(/*classType*/ ctx[11]?.kind.toString())};`)) {
+    			if (dirty & /*searchResults*/ 1 && li_style_value !== (li_style_value = `color: ${color(/*classType*/ ctx[12]?.kind.toString())};`)) {
     				attr_dev(li, "style", li_style_value);
     			}
     		},
@@ -542,7 +551,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(128:1) {#each searchResults as classType}",
+    		source: "(133:1) {#each searchResults as classType}",
     		ctx
     	});
 
@@ -550,12 +559,13 @@ var app = (function () {
     }
 
     function create_fragment(ctx) {
-    	let div2;
+    	let div3;
+    	let div1;
     	let input;
     	let t0;
     	let div0;
     	let t1;
-    	let div1;
+    	let div2;
     	let ul;
     	let mounted;
     	let dispose;
@@ -577,7 +587,8 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
-    			div2 = element("div");
+    			div3 = element("div");
+    			div1 = element("div");
     			input = element("input");
     			t0 = space();
     			div0 = element("div");
@@ -587,7 +598,7 @@ var app = (function () {
     			}
 
     			t1 = space();
-    			div1 = element("div");
+    			div2 = element("div");
     			ul = element("ul");
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
@@ -595,33 +606,37 @@ var app = (function () {
     			}
 
     			attr_dev(input, "class", "query-input");
-    			add_location(input, file, 105, 0, 2604);
-    			attr_dev(div0, "class", "types svelte-1fejiq4");
-    			add_location(div0, file, 115, 0, 2912);
-    			attr_dev(ul, "class", "class-browse svelte-1fejiq4");
-    			add_location(ul, file, 126, 0, 3215);
-    			attr_dev(div1, "class", "browse");
-    			add_location(div1, file, 125, 0, 3194);
-    			attr_dev(div2, "class", "main");
-    			add_location(div2, file, 101, 0, 2506);
+    			attr_dev(input, "placeholder", "Filter by typing name");
+    			add_location(input, file, 108, 0, 2616);
+    			attr_dev(div0, "class", "types svelte-x74moc");
+    			add_location(div0, file, 115, 0, 2831);
+    			attr_dev(div1, "class", "form");
+    			add_location(div1, file, 107, 0, 2597);
+    			attr_dev(ul, "class", "class-browse svelte-x74moc");
+    			add_location(ul, file, 131, 0, 3258);
+    			attr_dev(div2, "class", "browse");
+    			add_location(div2, file, 130, 0, 3237);
+    			attr_dev(div3, "class", "main");
+    			add_location(div3, file, 103, 0, 2499);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div2, anchor);
-    			append_dev(div2, input);
+    			insert_dev(target, div3, anchor);
+    			append_dev(div3, div1);
+    			append_dev(div1, input);
     			set_input_value(input, /*searchQuery*/ ctx[2]);
-    			append_dev(div2, t0);
-    			append_dev(div2, div0);
+    			append_dev(div1, t0);
+    			append_dev(div1, div0);
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				each_blocks_1[i].m(div0, null);
     			}
 
-    			append_dev(div2, t1);
-    			append_dev(div2, div1);
-    			append_dev(div1, ul);
+    			append_dev(div3, t1);
+    			append_dev(div3, div2);
+    			append_dev(div2, ul);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].m(ul, null);
@@ -641,7 +656,7 @@ var app = (function () {
     				set_input_value(input, /*searchQuery*/ ctx[2]);
     			}
 
-    			if (dirty & /*TypeOptions, searchType*/ 10) {
+    			if (dirty & /*TypeOptions, searchType, clearResults, searchAll*/ 26) {
     				each_value_1 = /*TypeOptions*/ ctx[3];
     				validate_each_argument(each_value_1);
     				let i;
@@ -692,7 +707,7 @@ var app = (function () {
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div2);
+    			if (detaching) detach_dev(div3);
     			destroy_each(each_blocks_1, detaching);
     			destroy_each(each_blocks, detaching);
     			mounted = false;
@@ -729,6 +744,13 @@ var app = (function () {
 
     function searchContainer(query) {
     	search("container", query);
+    }
+
+    function searchAll(type) {
+    	post({
+    		type: "search-all",
+    		value: { type, query: "*" }
+    	});
     }
 
     function open(query) {
@@ -800,16 +822,14 @@ var app = (function () {
     					}
     			}
     		});
-    	}); // setTimeout(() => searchAll(), 3000)
-    	// this is used to send message to provider
-    	// tsvscode.postMessage({ type: "get-token", value: undefined });
-    	// searchQueryInput.focus()
 
-    	function searchAll() {
-    		post({
-    			type: "search-all",
-    			value: { type: searchType, query: "*" }
-    		});
+    		// this is used to send message to provider
+    		// tsvscode.postMessage({ type: "get-token", value: undefined });
+    		searchAll("data");
+    	});
+
+    	function clearResults() {
+    		$$invalidate(0, searchResults = []);
     	}
 
     	function searchSymbol(query) {
@@ -830,7 +850,12 @@ var app = (function () {
     	}
 
     	const input_handler = () => {
-    		if (searchQuery === "*") searchAll(); else searchSymbol(searchQuery);
+    		if (searchQuery === "*") searchAll(searchType); else searchSymbol(searchQuery);
+    	};
+
+    	const change_handler = option => {
+    		clearResults();
+    		searchAll(option.value);
     	};
 
     	function input_change_handler() {
@@ -854,6 +879,7 @@ var app = (function () {
     		searchResults,
     		searchType,
     		searchQuery,
+    		clearResults,
     		post,
     		search,
     		searchData,
@@ -880,10 +906,11 @@ var app = (function () {
     		searchType,
     		searchQuery,
     		TypeOptions,
-    		searchAll,
+    		clearResults,
     		searchSymbol,
     		input_input_handler,
     		input_handler,
+    		change_handler,
     		input_change_handler,
     		$$binding_groups,
     		click_handler

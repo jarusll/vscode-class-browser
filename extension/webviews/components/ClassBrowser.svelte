@@ -1,6 +1,6 @@
 <script lang="ts">
 import { onMount } from "svelte";
-import Radio from "./Radio.svelte";
+import { validate_each_argument } from "svelte/internal";
 
     interface VSCodeSymbol {
         name: string;
@@ -63,11 +63,14 @@ import Radio from "./Radio.svelte";
             }
         });
 
-        // setTimeout(() => searchAll(), 3000)
         // this is used to send message to provider
         // tsvscode.postMessage({ type: "get-token", value: undefined });
-        // searchQueryInput.focus()
+        searchAll("data")
     });
+
+    function clearResults() {
+        searchResults = []
+    }
 
     function post(message: {type: String, value: any}) {
         tsvscode.postMessage(message);
@@ -92,11 +95,11 @@ import Radio from "./Radio.svelte";
         search("container", query)
     }
 
-    function searchAll() {
+    function searchAll(type: string) {
         post({
             type: "search-all",
             value: {
-                type: searchType,
+                type,
                 query: "*"
             }
         })
@@ -140,24 +143,27 @@ import Radio from "./Radio.svelte";
 <!-- <pre>
     {JSON.stringify({searchQuery, searchType}, null, 2)}
 </pre> -->
+<div class="form">
 <input bind:value={searchQuery} on:input={() => {
     if (searchQuery === "*")
-        searchAll()
+        searchAll(searchType)
     else 
         searchSymbol(searchQuery)
-}} class="query-input"/>
+}} class="query-input" placeholder="Filter by typing name"/>
 
-<!-- <div class="types">
-    <Radio options={TypeOptions} fontSize={12} legend='Select a Type' bind:userSelected={searchType}/>
-</div> -->
 <div class="types">
 {#each TypeOptions as option}
     <div class="type">
         <input type="radio" id={option.value} value={option.value} 
+            on:change={() => {
+                clearResults()
+                searchAll(option.value)
+            }}
             bind:group={searchType} class="input-type"/>
         <label for={option.value}>{option.label}</label>
     </div>
 {/each}
+</div>
 </div>
 
 <div class="browse">
@@ -188,9 +194,6 @@ import Radio from "./Radio.svelte";
     ul {
         list-style-type: square;
         list-style-position: inside;
-    }
-    li {
-        color: rgb(173, 40, 42);
     }
     .symbol {
         text-align: left;
