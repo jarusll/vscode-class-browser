@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { alphabets } from "./constants/alphabets";
+import { isAll, isClass, isData, isInterface, isStruct } from "./functions/symbolPredicates";
 import { getNonce } from "./getNonce";
 import { WorkspaceSymbolsFacade } from "./WorkspaceSymbolsFacade";
 
@@ -27,26 +28,20 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
     //   value: TokenManager.getToken(),
     // });
 
-    //#region predicates
-    const isInterface = (x: any) => x.kind === vscode.SymbolKind.Interface;
-    const isStruct = (x: any) => x.kind === vscode.SymbolKind.Struct;
-    const isClass = (x: any) => x.kind === vscode.SymbolKind.Class;
-    const any = (x: any, ...predicates: any[]) => predicates.some(x);
     const connectedWebview = webviewView.webview;
-    //#endregion predicates 
 
     connectedWebview.onDidReceiveMessage(async (data) => {
+      console.log(data);
       switch (data.type) {
         case "search-all":
           alphabets.forEach(character => {
             WorkspaceSymbolsFacade.fetch(character.toString())
-              .then(
-                function (symbols: vscode.SymbolInformation[]) {
-                  connectedWebview.postMessage({
-                    type: "partial-class-result",
-                    value: symbols.filter(x => isInterface(x) || isStruct(x) || isClass(x))
-                  });
+              .then(function (symbols: vscode.SymbolInformation[]) {
+                connectedWebview.postMessage({
+                  type: "partial-class-result",
+                  value: symbols.filter((x: vscode.SymbolInformation) => isAll(x))
                 });
+              });
           });
           break;
         case "search-class":
@@ -56,7 +51,6 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
                 connectedWebview.postMessage({
                   type: "class-result",
                   value: symbols.filter(x => isInterface(x) || isStruct(x) || isClass(x))
-                  // value: symbols.filter(item => item.kind === 4)
                 });
               });
           break;
