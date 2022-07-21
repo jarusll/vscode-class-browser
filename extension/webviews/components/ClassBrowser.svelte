@@ -147,8 +147,17 @@ import Radio from "./Radio.svelte";
         searchSymbol(searchQuery)
 }} class="query-input"/>
 
-<div class="types">
+<!-- <div class="types">
     <Radio options={TypeOptions} fontSize={12} legend='Select a Type' bind:userSelected={searchType}/>
+</div> -->
+<div class="types">
+{#each TypeOptions as option}
+    <div class="type">
+        <input type="radio" id={option.value} value={option.value} 
+            bind:group={searchType} class="input-type"/>
+        <label for={option.value}>{option.label}</label>
+    </div>
+{/each}
 </div>
 
 <div class="browse">
@@ -202,5 +211,16 @@ import Radio from "./Radio.svelte";
     }
     .types {
         margin: 0.5rem;
+    }
+    .type {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        margin: 0.5rem;
+        cursor: pointer;
+    }
+    .type input {
+        width: 30px;
+        outline: none;
     }
 </style>
