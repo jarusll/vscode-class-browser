@@ -1,5 +1,7 @@
 <script lang="ts">
 import { onMount } from "svelte";
+import Radio from "./Radio.svelte";
+
     interface VSCodeSymbol {
         name: string;
         kind: number;
@@ -21,9 +23,23 @@ import { onMount } from "svelte";
         };
     };
 
-    let classResults: Array<VSCodeSymbol> = []
-    let searchQueryInput: any
-    let searchQuery = ""
+    const TypeOptions: Array<any> = [
+        {
+            value: "data",
+            label: "Data"
+        },
+        {
+            value: "process",
+            label: "Process"
+        },
+        {
+            value: "container",
+            label: "Container"
+        }
+    ];
+    let searchResults: Array<VSCodeSymbol> = []
+    let searchType: string = "data";
+    let searchQuery: string = "";
 
     onMount(async () => {
         // this is used to recieve message from sidebar provider
@@ -31,14 +47,15 @@ import { onMount } from "svelte";
             const message = event.data;
             switch (message.type) {
                 case "class-result": {
-                    classResults = message.value
+                    console.log("class-result", message.value)
+                    searchResults = message.value
                     break;
                 }
                 case "partial-class-result": {
                     // append
-                    classResults = classResults.concat(message.value)
+                    searchResults = searchResults.concat(message.value)
                     // remove duplicates
-                    classResults = classResults.filter((value: any, index, self) =>
+                    searchResults = searchResults.filter((value: any, index, self) =>
                         index === self.findIndex((t: any) => (
                             t.name === value.name
                         )))
@@ -57,23 +74,36 @@ import { onMount } from "svelte";
         tsvscode.postMessage(message);
     }
 
-    function search(queryAction: {type: String, value: any}) {
+    function search(type: string, query: string) {
         post({
-            type: "search-" + queryAction.type,
-            value: queryAction.value
+            type: "search-" + type,
+            value: query
         })
     }
 
-    function searchClass(query: String){
-        search("class", query)
+    function searchData(query: string){
+        search("data", query)
     }
 
-    function searchMethod(query: String){
-        post({type: "search-method", value: query})
+    function searchProcess(query: string){
+        search("process", query)
+    }
+
+    function searchContainer(query: string){
+        search("container", query)
     }
 
     function searchAll() {
-        post({type: "search-all", value: searchQuery})
+        search("all", "*")
+    }
+
+    function searchSymbol(query: string){
+        if (searchType === "data")
+            searchData(query)
+        else if (searchType === "process")
+            searchProcess(query)
+        else 
+            searchContainer(query)
     }
 
     function open(query: String){
@@ -96,15 +126,24 @@ import { onMount } from "svelte";
 </script>
 
 <div class="main">
-<input bind:this={searchQueryInput} bind:value={searchQuery} on:input={() => {
-    if (searchQuery === "*") 
-        searchAll()
-    else if (searchQuery.length > 1) 
-        searchClass(searchQuery)
+<pre>
+    {JSON.stringify({searchQuery, searchType}, null, 2)}
+</pre>
+<input bind:value={searchQuery} on:input={() => {
+    // if (searchQuery === "*") 
+    //     searchAll()
+    // else 
+    //     search(searchQuery)
+    searchSymbol(searchQuery)
 }} class="query-input"/>
+
+<div class="types">
+    <Radio options={TypeOptions} fontSize={16} legend='Select a Type' bind:userSelected={searchType}/>
+</div>
+
 <div class="browse">
 <ul class="class-browse">
-	{#each classResults as classType}
+	{#each searchResults as classType}
 		<li style={`color: ${color(classType?.kind.toString())};`}>
             <button class="symbol" 
                 title={classType?.kind.toString() + " " + classType?.name}
@@ -150,5 +189,8 @@ import { onMount } from "svelte";
         text-align: right;
         color: gray;
         text-overflow: ellipsis;
+    }
+    .types {
+        margin: 0.5rem;
     }
 </style>

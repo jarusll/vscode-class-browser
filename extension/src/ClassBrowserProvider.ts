@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { alphabets } from "./constants/alphabets";
-import { isAll, isClass, isData, isInterface, isStruct } from "./functions/symbolPredicates";
+import { isAll, isClass, isData, isInterface, isStruct, isContainer, isProcess } from "./functions/symbolPredicates";
 import { getNonce } from "./getNonce";
 import { WorkspaceSymbolsFacade } from "./WorkspaceSymbolsFacade";
 
@@ -44,13 +44,36 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
               });
           });
           break;
-        case "search-class":
+        case "search-data":
           WorkspaceSymbolsFacade.fetch(data.value)
             .then(
               function (symbols: vscode.SymbolInformation[]) {
+                console.log("data", symbols.filter(x => isData(x)));
                 connectedWebview.postMessage({
                   type: "class-result",
-                  value: symbols.filter(x => isInterface(x) || isStruct(x) || isClass(x))
+                  value: symbols.filter(x => isData(x))
+                });
+              });
+          break;
+        case "search-process":
+          WorkspaceSymbolsFacade.fetch(data.value)
+            .then(
+              function (symbols: vscode.SymbolInformation[]) {
+                console.log("functions", symbols.filter(x => isProcess(x)));
+                connectedWebview.postMessage({
+                  type: "class-result",
+                  value: symbols.filter(x => isProcess(x))
+                });
+              });
+          break;
+        case "search-container":
+          WorkspaceSymbolsFacade.fetch(data.value)
+            .then(
+              function (symbols: vscode.SymbolInformation[]) {
+                console.log("container", symbols.filter(x => isContainer(x)));
+                connectedWebview.postMessage({
+                  type: "class-result",
+                  value: symbols.filter(x => isContainer(x))
                 });
               });
           break;
@@ -64,11 +87,6 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
             await vscode.commands.executeCommand(
               "outline.focus"
             );
-            // setTimeout(() => {
-            //   vscode.commands.executeCommand(
-            //     "outline.focus"
-            //   );
-            // }, 1000);
           });
         }
           break;
