@@ -31,15 +31,27 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
     const connectedWebview = webviewView.webview;
 
     connectedWebview.onDidReceiveMessage(async (data) => {
-      console.log(data);
+      console.log(data);;
       switch (data.type) {
         case "search-all":
+          const {type, query} = data.value;
+          let typePredicate: Function;
+          if (type === "data") {
+            typePredicate = isData;
+          }
+          else if (type === "process") {
+            typePredicate = isProcess;
+          }
+          else {
+            typePredicate = isContainer;
+          }
           alphabets.forEach(character => {
             WorkspaceSymbolsFacade.fetch(character.toString())
               .then(function (symbols: vscode.SymbolInformation[]) {
+                console.log("all",symbols.filter((x: vscode.SymbolInformation) => typePredicate(x)) );
                 connectedWebview.postMessage({
-                  type: "partial-class-result",
-                  value: symbols.filter((x: vscode.SymbolInformation) => isAll(x))
+                  type: "partial-result",
+                  value: symbols.filter((x: vscode.SymbolInformation) => typePredicate(x))
                 });
               });
           });
@@ -50,7 +62,7 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
               function (symbols: vscode.SymbolInformation[]) {
                 console.log("data", symbols.filter(x => isData(x)));
                 connectedWebview.postMessage({
-                  type: "class-result",
+                  type: "result",
                   value: symbols.filter(x => isData(x))
                 });
               });
@@ -61,7 +73,7 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
               function (symbols: vscode.SymbolInformation[]) {
                 console.log("functions", symbols.filter(x => isProcess(x)));
                 connectedWebview.postMessage({
-                  type: "class-result",
+                  type: "result",
                   value: symbols.filter(x => isProcess(x))
                 });
               });
@@ -72,7 +84,7 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
               function (symbols: vscode.SymbolInformation[]) {
                 console.log("container", symbols.filter(x => isContainer(x)));
                 connectedWebview.postMessage({
-                  type: "class-result",
+                  type: "result",
                   value: symbols.filter(x => isContainer(x))
                 });
               });

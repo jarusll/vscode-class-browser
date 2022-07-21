@@ -26,15 +26,15 @@ import Radio from "./Radio.svelte";
     const TypeOptions: Array<any> = [
         {
             value: "data",
-            label: "Data"
+            label: "Data (Class/Interface/Struct/Enum)"
         },
         {
             value: "process",
-            label: "Process"
+            label: "Process (Function)"
         },
         {
             value: "container",
-            label: "Container"
+            label: "Container (Namespace/Package/Module)"
         }
     ];
     let searchResults: Array<VSCodeSymbol> = []
@@ -46,12 +46,11 @@ import Radio from "./Radio.svelte";
         window.addEventListener("message", async (event) => {
             const message = event.data;
             switch (message.type) {
-                case "class-result": {
-                    console.log("class-result", message.value)
+                case "result": {
                     searchResults = message.value
                     break;
                 }
-                case "partial-class-result": {
+                case "partial-result": {
                     // append
                     searchResults = searchResults.concat(message.value)
                     // remove duplicates
@@ -94,7 +93,13 @@ import Radio from "./Radio.svelte";
     }
 
     function searchAll() {
-        search("all", "*")
+        post({
+            type: "search-all",
+            value: {
+                type: searchType,
+                query: "*"
+            }
+        })
     }
 
     function searchSymbol(query: string){
@@ -118,6 +123,12 @@ import Radio from "./Radio.svelte";
             return "aqua"
         case "Struct":
             return "orange"
+        case "Function":
+            return "green"
+        case "Namespace":
+        case "Module":
+        case "Package":
+            return "orange"
         default:
             return "white"
         }
@@ -126,19 +137,18 @@ import Radio from "./Radio.svelte";
 </script>
 
 <div class="main">
-<pre>
+<!-- <pre>
     {JSON.stringify({searchQuery, searchType}, null, 2)}
-</pre>
+</pre> -->
 <input bind:value={searchQuery} on:input={() => {
-    // if (searchQuery === "*") 
-    //     searchAll()
-    // else 
-    //     search(searchQuery)
-    searchSymbol(searchQuery)
+    if (searchQuery === "*")
+        searchAll()
+    else 
+        searchSymbol(searchQuery)
 }} class="query-input"/>
 
 <div class="types">
-    <Radio options={TypeOptions} fontSize={16} legend='Select a Type' bind:userSelected={searchType}/>
+    <Radio options={TypeOptions} fontSize={12} legend='Select a Type' bind:userSelected={searchType}/>
 </div>
 
 <div class="browse">
