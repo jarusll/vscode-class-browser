@@ -1,6 +1,8 @@
 <script lang="ts">
+
+let autoSearch: any
+
 import { onMount } from "svelte";
-import { validate_each_argument } from "svelte/internal";
 
     interface VSCodeSymbol {
         name: string;
@@ -40,17 +42,22 @@ import { validate_each_argument } from "svelte/internal";
     let searchResults: Array<VSCodeSymbol> = []
     let searchType: string = "data";
     let searchQuery: string = "";
+    let showMoreButton: any;
+    let showMoreFlag: boolean = true
 
     onMount(async () => {
         // this is used to recieve message from sidebar provider
+
         window.addEventListener("message", async (event) => {
             const message = event.data;
             switch (message.type) {
                 case "result": {
+                    showMoreFlag = true
                     searchResults = message.value
                     break;
                 }
                 case "partial-result": {
+                    showMoreFlag = true
                     // append
                     searchResults = searchResults.concat(message.value)
                     // remove duplicates
@@ -60,12 +67,29 @@ import { validate_each_argument } from "svelte/internal";
                         )))
                     break;
                 }
+                case "half-result": {
+                    showMoreFlag = true
+                    // append
+                    console.log("more", message.value)
+                    searchResults = searchResults.concat(message.value)
+                    // remove duplicates
+                    searchResults = searchResults.filter((value: any, index, self) =>
+                        index === self.findIndex((t: any) => (
+                            t.name === value.name
+                        )))
+                    break;
+                }
+                case "results-exhausted": {
+                    showMoreFlag = false
+                    // clearInterval(autoSearch)
+                    break;
+                }
             }
         });
 
         // this is used to send message to provider
         // tsvscode.postMessage({ type: "get-token", value: undefined });
-        searchAll("data")
+        // searchAll("data")
     });
 
     function clearResults() {
@@ -118,6 +142,10 @@ import { validate_each_argument } from "svelte/internal";
         post({type: "open", value: query})
     }
 
+    function showMore(){
+        post({type: "show-more", value: ""})
+    }
+
     function color(kind: string): string{
         switch(kind){
         case "Interface":
@@ -143,6 +171,9 @@ import { validate_each_argument } from "svelte/internal";
 <!-- <pre>
     {JSON.stringify({searchQuery, searchType}, null, 2)}
 </pre> -->
+<span>
+    {searchResults.length}
+</span>
 <div class="form">
 <input bind:value={searchQuery} on:input={() => {
     if (searchQuery === "*")
@@ -163,13 +194,17 @@ import { validate_each_argument } from "svelte/internal";
         <label for={option.value}>{option.label}</label>
     </div>
 {/each}
+
 </div>
+{#if showMoreFlag}
+    <button bind:this={showMoreButton} on:click={showMore}>Show More</button>
+{/if}
 </div>
 
-<div class="browse">
-<ul class="class-browse">
+<ul on:scroll={(e) => showMore()} class="browse">
 	{#each searchResults as classType}
-		<li style={`color: ${color(classType?.kind.toString())};`}>
+		<li style={`color: ${color(classType?.kind.toString())};`} on:scroll={() => console.log("list scrolling")} 
+                on:select={() => console.log("select")}>
             <button class="symbol" 
                 title={classType?.kind.toString() + " " + classType?.name}
                 on:click={() => {
@@ -188,7 +223,6 @@ import { validate_each_argument } from "svelte/internal";
 	{/each}
 </ul>
 </div>
-</div>
 
 <style>
     ul {
@@ -206,12 +240,26 @@ import { validate_each_argument } from "svelte/internal";
     }
     .class {
         text-align: left;
+        height: 300px;
+        overflow-y: scroll;
     }
-    .container {
+    .main {
+        position: absolute;
+        overflow-y: scroll;
+    }
+    .form {
+        height: 15vh;
+    }
+    .browse {
+        /* background-color: red; */
+        overflow: scroll; 
+        height: 85vh;
+    }
+    /* .container {
         text-align: right;
         color: gray;
         text-overflow: ellipsis;
-    }
+    } */
     .types {
         margin: 0.5rem;
     }

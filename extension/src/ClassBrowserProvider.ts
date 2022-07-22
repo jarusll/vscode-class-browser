@@ -1,8 +1,13 @@
+import { exec } from "child_process";
 import * as vscode from "vscode";
 import { alphabets } from "./constants/alphabets";
+import ExecutionQueue from "./ExecutionQueue";
 import { isAll, isClass, isData, isInterface, isStruct, isContainer, isProcess } from "./functions/symbolPredicates";
 import { getNonce } from "./getNonce";
+import Thunk from "./Thunk";
 import { WorkspaceSymbolsFacade } from "./WorkspaceSymbolsFacade";
+
+const execQueue = new ExecutionQueue()
 
 export class ClassBrowserProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
@@ -31,10 +36,24 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
     const connectedWebview = webviewView.webview;
 
     connectedWebview.onDidReceiveMessage(async (data) => {
-      console.log(data);;
       switch (data.type) {
+        case "show-more":
+          const halfResult = await execQueue.lazyExec()
+          if (halfResult[0] === false){
+            connectedWebview.postMessage({
+              type: "results-exhausted",
+              value: ""
+            });
+          } else {
+            connectedWebview.postMessage({
+              type: "half-result",
+              value: halfResult
+            });
+          }
+          break;
         case "search-all":
-          const {type, query} = data.value;
+          execQueue.reset()
+          const { type, query } = data.value;
           let typePredicate: Function;
           if (type === "data") {
             typePredicate = isData;
@@ -45,16 +64,13 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
           else {
             typePredicate = isContainer;
           }
-          alphabets.forEach(character => {
-            WorkspaceSymbolsFacade.fetch(character.toString())
-              .then(function (symbols: vscode.SymbolInformation[]) {
-                console.log("all",symbols.filter((x: vscode.SymbolInformation) => typePredicate(x)) );
-                connectedWebview.postMessage({
-                  type: "partial-result",
-                  value: symbols.filter((x: vscode.SymbolInformation) => typePredicate(x))
-                });
-              });
+          alphabets.forEach(async (character) => {
+            execQueue.enqueue(new Thunk(async () => {
+              const symbols = await WorkspaceSymbolsFacade.fetch(character.toString())
+              return symbols.filter((x: vscode.SymbolInformation) => typePredicate(x))
+            }))
           });
+          await execQueue.lazyExec()
           break;
         case "search-data":
           WorkspaceSymbolsFacade.fetch(data.value)
