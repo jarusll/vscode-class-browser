@@ -1,3 +1,4 @@
+import { SymbolInformation } from 'vscode';
 import Queue from "./Queue";
 
 const THRESHOLD: number = 20;
@@ -12,7 +13,7 @@ export default class ExecutionQueue extends Queue {
         this.clear();
         this.#leftOver = [];
     }
-    async lazyExec(): Promise<any[]> {
+    async lazyExec(): Promise<SymbolInformation[] | Boolean> {
         if (this.#leftOver.length > 0){
             const firstChunk = this.#leftOver.slice(0, 20);
             this.#leftOver = this.#leftOver.slice(20);
@@ -27,6 +28,6 @@ export default class ExecutionQueue extends Queue {
             }
             return value.slice(0, 20);
         }
-        return [false];
+        return false;
     }
 }

@@ -43,7 +43,7 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
           break;
         case "show-more":
           const partialResult = await execQueue.lazyExec();
-          if (partialResult[0] === false) {
+          if (partialResult === false) {
             connectedWebview.postMessage({
               type: "results-exhausted",
               value: ""
@@ -68,6 +68,7 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
           else {
             typePredicate = isContainer;
           }
+          // TODO replace this with a SearchPolicy
           alphabets.forEach(async (character) => {
             execQueue.enqueue(new Thunk(async () => {
               const symbols = await WorkspaceSymbolsFacade.fetch(character.toString());
@@ -102,7 +103,7 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
             await vscode.window.showTextDocument(doc, vscode.ViewColumn.One);
             const myPos = new vscode.Position(data.value.position.line, data.value.position.character);     // I think you know how to get the values, let us know if you don't
             vscode.window.activeTextEditor!.selections = [new vscode.Selection(myPos, myPos)];
-            await vscode.window.activeTextEditor!.revealRange(new vscode.Range(myPos, myPos));
+            vscode.window.activeTextEditor!.revealRange(new vscode.Range(myPos, myPos));
             await vscode.commands.executeCommand(
               "outline.focus"
             );

@@ -42,8 +42,7 @@ import { onMount } from "svelte";
     let searchResults: Array<VSCodeSymbol> = []
     let searchType: string = "data";
     let searchQuery: string = "";
-    let showMoreButton: any;
-    let showMoreFlag: boolean = true
+    let loading: boolean = false;
 
     onMount(async () => {
         // this is used to recieve message from sidebar provider
@@ -94,11 +93,14 @@ import { onMount } from "svelte";
     }
 
     function startAutosearch(){
+        stopAutosearch()
         autoSearch = setInterval(() => showMore(), 1000)
+        loading = true
     }
 
     function stopAutosearch(){
         clearInterval(autoSearch)
+        loading = false
     }
 
     function resetBackend(){
@@ -142,15 +144,12 @@ import { onMount } from "svelte";
     }
 
     function searchSymbol(query: string){
-        stopAutosearch()
-        clearResults()
         if (searchType === "data")
             searchData(query)
         else if (searchType === "process")
             searchProcess(query)
         else 
             searchContainer(query)
-        startAutosearch()
     }
 
     function open(query: String){
@@ -186,9 +185,6 @@ import { onMount } from "svelte";
 <!-- <pre>
     {JSON.stringify({searchQuery, searchType}, null, 2)}
 </pre> -->
-<span>
-    {searchResults.length}
-</span>
 <div class="form">
 <input bind:value={searchQuery} on:input={() => {
     if (searchQuery === ""){
@@ -196,7 +192,9 @@ import { onMount } from "svelte";
         searchAll(searchType)
     }
     else {
+        clearResults()
         searchSymbol(searchQuery)
+        startAutosearch()
     }
 }} class="query-input" placeholder="Filter by typing name"/>
 
@@ -217,12 +215,18 @@ import { onMount } from "svelte";
 {/each}
 
 </div>
-<!-- {#if showMoreFlag}
-    <button bind:this={showMoreButton} on:click={showMore}>Show More</button>
-{/if} -->
 </div>
 
 <ul class="browse">
+    <!-- result count -->
+    <div>
+        <span>
+            {searchResults.length} Indexed
+        </span>
+    </div>
+    <div class:loading={}>
+    </div>
+    <!-- result -->
 	{#each searchResults as classType}
 		<li style={`color: ${color(classType?.kind.toString())};`} on:scroll={() => console.log("list scrolling")} 
                 on:select={() => console.log("select")}>
@@ -254,7 +258,7 @@ import { onMount } from "svelte";
         text-align: left;
         background-color: transparent;
         font-size: 1rem;
-        width: max-content;
+        max-width: 250px;
     }
     .symbol:hover {
         background-color: rgb(59, 125, 168);
@@ -269,18 +273,16 @@ import { onMount } from "svelte";
         overflow-y: scroll;
     }
     .form {
-        height: 15vh;
+        height: 14%;
+        margin: 0;
+        padding: 0;
     }
     .browse {
-        /* background-color: red; */
         overflow: scroll; 
-        height: 85vh;
+        height: 84%;
+        margin: 0;
+        padding: 0;
     }
-    /* .container {
-        text-align: right;
-        color: gray;
-        text-overflow: ellipsis;
-    } */
     .types {
         margin: 0.5rem;
     }
@@ -294,5 +296,10 @@ import { onMount } from "svelte";
     .type input {
         width: 30px;
         outline: none;
+    }
+    .loading {
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' width='575' height='6px'%3E %3Cstyle%3E circle { animation: ball 2.5s cubic-bezier(0.000, 1.000, 1.000, 0.000) infinite; fill: %23bbb; } %23balls { animation: balls 2.5s linear infinite; } %23circle2 { animation-delay: 0.1s; } %23circle3 { animation-delay: 0.2s; } %23circle4 { animation-delay: 0.3s; } %23circle5 { animation-delay: 0.4s; } @keyframes ball { from { transform: none; } 20% { transform: none; } 80% { transform: translateX(864px); } to { transform: translateX(864px); } } @keyframes balls { from { transform: translateX(-40px); } to { transform: translateX(30px); } } %3C/style%3E %3Cg id='balls'%3E %3Ccircle class='circle' id='circle1' cx='-115' cy='3' r='3'/%3E %3Ccircle class='circle' id='circle2' cx='-130' cy='3' r='3' /%3E %3Ccircle class='circle' id='circle3' cx='-145' cy='3' r='3' /%3E %3Ccircle class='circle' id='circle4' cx='-160' cy='3' r='3' /%3E %3Ccircle class='circle' id='circle5' cx='-175' cy='3' r='3' /%3E %3C/g%3E %3C/svg%3E") 50% no-repeat;
+        width: 100%; 
+        padding: 10px;
     }
 </style>
