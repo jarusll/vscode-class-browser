@@ -22,6 +22,7 @@ Piggybacks on vscode's SymbolProvider.
 # Todo
 - [ ] ~~Fetch members of selected class(Maybe?)~~ Since Outline view is better.
 - [ ] UI enhancements(icons, hover labels)
+- [ ] Lazy loading
 
 # Limitations:
 
