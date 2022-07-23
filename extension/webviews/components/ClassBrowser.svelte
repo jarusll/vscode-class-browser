@@ -42,7 +42,7 @@ import { onMount } from "svelte";
     let searchResults: Array<VSCodeSymbol> = []
     let searchType: string = "data";
     let searchQuery: string = "";
-    let loading: boolean = false;
+    let isLoading: boolean = false;
 
     onMount(async () => {
         // this is used to recieve message from sidebar provider
@@ -51,13 +51,11 @@ import { onMount } from "svelte";
             const message = event.data;
             switch (message.type) {
                 case "result": {
-                    showMoreFlag = true
                     searchResults = message.value
                     break;
                 }
                 case "partial-result": {
                     console.log("partial-result", message.value)
-                    showMoreFlag = true
                     // append
                     searchResults = searchResults.concat(message.value)
                     // remove duplicates
@@ -68,7 +66,6 @@ import { onMount } from "svelte";
                     break;
                 }
                 case "results-exhausted": {
-                    // showMoreFlag = false
                     console.log("exhausted")
                     stopAutosearch()
                     break;
@@ -78,8 +75,10 @@ import { onMount } from "svelte";
 
         // this is used to send message to provider
         // tsvscode.postMessage({ type: "get-token", value: undefined });
-        searchAll("data")
-        startAutosearch()
+        setTimeout(() => {
+            searchAll("data")
+            startAutosearch()
+        }, 3000);
     });
 
     function clearResults() {
@@ -95,12 +94,12 @@ import { onMount } from "svelte";
     function startAutosearch(){
         stopAutosearch()
         autoSearch = setInterval(() => showMore(), 1000)
-        loading = true
+        isLoading = true
     }
 
     function stopAutosearch(){
         clearInterval(autoSearch)
-        loading = false
+        isLoading = false
     }
 
     function resetBackend(){
@@ -213,19 +212,16 @@ import { onMount } from "svelte";
         <label for={option.value}>{option.label}</label>
     </div>
 {/each}
-
+    <!-- result count -->
+    <div class="index-count">
+        {searchResults.length} Indexed
+    </div>
+    <div class:loading={isLoading}>
+    </div>
 </div>
 </div>
 
 <ul class="browse">
-    <!-- result count -->
-    <div>
-        <span>
-            {searchResults.length} Indexed
-        </span>
-    </div>
-    <div class:loading={}>
-    </div>
     <!-- result -->
 	{#each searchResults as classType}
 		<li style={`color: ${color(classType?.kind.toString())};`} on:scroll={() => console.log("list scrolling")} 
@@ -250,10 +246,6 @@ import { onMount } from "svelte";
 </div>
 
 <style>
-    ul {
-        list-style-type: square;
-        list-style-position: inside;
-    }
     .symbol {
         text-align: left;
         background-color: transparent;
@@ -269,19 +261,23 @@ import { onMount } from "svelte";
         overflow-y: scroll;
     }
     .main {
+        display: flex;
+        flex-direction: column;
         position: absolute;
-        overflow-y: scroll;
+        height: 100%;
+        margin: 0;
+        padding: 0.1rem;
     }
     .form {
-        height: 14%;
-        margin: 0;
-        padding: 0;
+        /* height: 16%; */
     }
     .browse {
-        overflow: scroll; 
-        height: 84%;
-        margin: 0;
-        padding: 0;
+        position: relative;
+        overflow-y: scroll; 
+        overflow-x: hidden;
+        /* height: 82%; */
+        list-style-type: square;
+        list-style-position: inside;
     }
     .types {
         margin: 0.5rem;
@@ -301,5 +297,9 @@ import { onMount } from "svelte";
         background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' width='575' height='6px'%3E %3Cstyle%3E circle { animation: ball 2.5s cubic-bezier(0.000, 1.000, 1.000, 0.000) infinite; fill: %23bbb; } %23balls { animation: balls 2.5s linear infinite; } %23circle2 { animation-delay: 0.1s; } %23circle3 { animation-delay: 0.2s; } %23circle4 { animation-delay: 0.3s; } %23circle5 { animation-delay: 0.4s; } @keyframes ball { from { transform: none; } 20% { transform: none; } 80% { transform: translateX(864px); } to { transform: translateX(864px); } } @keyframes balls { from { transform: translateX(-40px); } to { transform: translateX(30px); } } %3C/style%3E %3Cg id='balls'%3E %3Ccircle class='circle' id='circle1' cx='-115' cy='3' r='3'/%3E %3Ccircle class='circle' id='circle2' cx='-130' cy='3' r='3' /%3E %3Ccircle class='circle' id='circle3' cx='-145' cy='3' r='3' /%3E %3Ccircle class='circle' id='circle4' cx='-160' cy='3' r='3' /%3E %3Ccircle class='circle' id='circle5' cx='-175' cy='3' r='3' /%3E %3C/g%3E %3C/svg%3E") 50% no-repeat;
         width: 100%; 
         padding: 10px;
+    }
+    .index-count {
+        text-align: center;
+        font-size: 1.2rem;
     }
 </style>

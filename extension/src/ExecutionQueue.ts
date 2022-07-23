@@ -28,6 +28,7 @@ export default class ExecutionQueue extends Queue {
             }
             return value.slice(0, 20);
         }
+        console.log("queue empty")
         return false;
     }
 }

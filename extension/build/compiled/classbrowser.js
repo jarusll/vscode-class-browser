@@ -65,6 +65,9 @@ var app = (function () {
     function set_input_value(input, value) {
         input.value = value == null ? '' : value;
     }
+    function toggle_class(element, name, toggle) {
+        element.classList[toggle ? 'add' : 'remove'](name);
+    }
     function custom_event(type, detail, { bubbles = false, cancelable = false } = {}) {
         const e = document.createEvent('CustomEvent');
         e.initCustomEvent(type, bubbles, cancelable, detail);
@@ -389,13 +392,13 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[20] = list[i];
+    	child_ctx[19] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[23] = list[i];
+    	child_ctx[22] = list[i];
     	return child_ctx;
     }
 
@@ -405,14 +408,14 @@ var app = (function () {
     	let input;
     	let t0;
     	let label;
-    	let t1_value = /*option*/ ctx[23].label + "";
+    	let t1_value = /*option*/ ctx[22].label + "";
     	let t1;
     	let t2;
     	let mounted;
     	let dispose;
 
     	function change_handler() {
-    		return /*change_handler*/ ctx[10](/*option*/ ctx[23]);
+    		return /*change_handler*/ ctx[11](/*option*/ ctx[22]);
     	}
 
     	const block = {
@@ -424,17 +427,17 @@ var app = (function () {
     			t1 = text(t1_value);
     			t2 = space();
     			attr_dev(input, "type", "radio");
-    			attr_dev(input, "id", /*option*/ ctx[23].value);
-    			input.__value = /*option*/ ctx[23].value;
+    			attr_dev(input, "id", /*option*/ ctx[22].value);
+    			input.__value = /*option*/ ctx[22].value;
     			input.value = input.__value;
     			attr_dev(input, "name", "types");
-    			attr_dev(input, "class", "input-type svelte-wnbc8j");
-    			/*$$binding_groups*/ ctx[12][0].push(input);
-    			add_location(input, file, 156, 8, 3799);
-    			attr_dev(label, "for", /*option*/ ctx[23].value);
-    			add_location(label, file, 165, 8, 4130);
-    			attr_dev(div, "class", "type svelte-wnbc8j");
-    			add_location(div, file, 155, 4, 3772);
+    			attr_dev(input, "class", "input-type svelte-tru1b8");
+    			/*$$binding_groups*/ ctx[13][0].push(input);
+    			add_location(input, file, 156, 8, 3753);
+    			attr_dev(label, "for", /*option*/ ctx[22].value);
+    			add_location(label, file, 165, 8, 4084);
+    			attr_dev(div, "class", "type svelte-tru1b8");
+    			add_location(div, file, 155, 4, 3726);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -448,7 +451,7 @@ var app = (function () {
     			if (!mounted) {
     				dispose = [
     					listen_dev(input, "change", change_handler, false, false, false),
-    					listen_dev(input, "change", /*input_change_handler*/ ctx[11])
+    					listen_dev(input, "change", /*input_change_handler*/ ctx[12])
     				];
 
     				mounted = true;
@@ -463,7 +466,7 @@ var app = (function () {
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
-    			/*$$binding_groups*/ ctx[12][0].splice(/*$$binding_groups*/ ctx[12][0].indexOf(input), 1);
+    			/*$$binding_groups*/ ctx[13][0].splice(/*$$binding_groups*/ ctx[13][0].indexOf(input), 1);
     			mounted = false;
     			run_all(dispose);
     		}
@@ -480,16 +483,16 @@ var app = (function () {
     	return block;
     }
 
-    // (183:1) {#each searchResults as classType}
+    // (180:1) {#each searchResults as classType}
     function create_each_block(ctx) {
     	let li;
     	let button;
     	let span0;
-    	let t0_value = /*classType*/ ctx[20].name + "";
+    	let t0_value = /*classType*/ ctx[19].name + "";
     	let t0;
     	let t1;
     	let span1;
-    	let t2_value = (/*classType*/ ctx[20]?.containerName || "") + "";
+    	let t2_value = (/*classType*/ ctx[19]?.containerName || "") + "";
     	let t2;
     	let button_title_value;
     	let t3;
@@ -498,7 +501,7 @@ var app = (function () {
     	let dispose;
 
     	function click_handler() {
-    		return /*click_handler*/ ctx[13](/*classType*/ ctx[20]);
+    		return /*click_handler*/ ctx[14](/*classType*/ ctx[19]);
     	}
 
     	const block = {
@@ -511,15 +514,15 @@ var app = (function () {
     			span1 = element("span");
     			t2 = text(t2_value);
     			t3 = space();
-    			attr_dev(span0, "class", "class svelte-wnbc8j");
-    			add_location(span0, file, 196, 16, 5045);
+    			attr_dev(span0, "class", "class svelte-tru1b8");
+    			add_location(span0, file, 193, 16, 4993);
     			attr_dev(span1, "class", "container");
-    			add_location(span1, file, 197, 16, 5105);
-    			attr_dev(button, "class", "symbol svelte-wnbc8j");
-    			attr_dev(button, "title", button_title_value = /*classType*/ ctx[20]?.kind.toString() + " " + /*classType*/ ctx[20]?.name);
-    			add_location(button, file, 185, 12, 4627);
-    			attr_dev(li, "style", li_style_value = `color: ${color(/*classType*/ ctx[20]?.kind.toString())};`);
-    			add_location(li, file, 183, 2, 4450);
+    			add_location(span1, file, 194, 16, 5053);
+    			attr_dev(button, "class", "symbol svelte-tru1b8");
+    			attr_dev(button, "title", button_title_value = /*classType*/ ctx[19]?.kind.toString() + " " + /*classType*/ ctx[19]?.name);
+    			add_location(button, file, 182, 12, 4575);
+    			attr_dev(li, "style", li_style_value = `color: ${color(/*classType*/ ctx[19]?.kind.toString())};`);
+    			add_location(li, file, 180, 2, 4398);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -534,8 +537,8 @@ var app = (function () {
     			if (!mounted) {
     				dispose = [
     					listen_dev(button, "click", click_handler, false, false, false),
-    					listen_dev(li, "scroll", /*scroll_handler*/ ctx[14], false, false, false),
-    					listen_dev(li, "select", /*select_handler*/ ctx[15], false, false, false)
+    					listen_dev(li, "scroll", /*scroll_handler*/ ctx[15], false, false, false),
+    					listen_dev(li, "select", /*select_handler*/ ctx[16], false, false, false)
     				];
 
     				mounted = true;
@@ -543,14 +546,14 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*searchResults*/ 1 && t0_value !== (t0_value = /*classType*/ ctx[20].name + "")) set_data_dev(t0, t0_value);
-    			if (dirty & /*searchResults*/ 1 && t2_value !== (t2_value = (/*classType*/ ctx[20]?.containerName || "") + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*searchResults*/ 1 && t0_value !== (t0_value = /*classType*/ ctx[19].name + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*searchResults*/ 1 && t2_value !== (t2_value = (/*classType*/ ctx[19]?.containerName || "") + "")) set_data_dev(t2, t2_value);
 
-    			if (dirty & /*searchResults*/ 1 && button_title_value !== (button_title_value = /*classType*/ ctx[20]?.kind.toString() + " " + /*classType*/ ctx[20]?.name)) {
+    			if (dirty & /*searchResults*/ 1 && button_title_value !== (button_title_value = /*classType*/ ctx[19]?.kind.toString() + " " + /*classType*/ ctx[19]?.name)) {
     				attr_dev(button, "title", button_title_value);
     			}
 
-    			if (dirty & /*searchResults*/ 1 && li_style_value !== (li_style_value = `color: ${color(/*classType*/ ctx[20]?.kind.toString())};`)) {
+    			if (dirty & /*searchResults*/ 1 && li_style_value !== (li_style_value = `color: ${color(/*classType*/ ctx[19]?.kind.toString())};`)) {
     				attr_dev(li, "style", li_style_value);
     			}
     		},
@@ -565,7 +568,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(183:1) {#each searchResults as classType}",
+    		source: "(180:1) {#each searchResults as classType}",
     		ctx
     	});
 
@@ -574,23 +577,22 @@ var app = (function () {
 
     function create_fragment(ctx) {
     	let div4;
-    	let div1;
+    	let div3;
     	let input;
     	let t0;
-    	let div0;
-    	let t1;
-    	let ul;
     	let div2;
-    	let span;
+    	let t1;
+    	let div0;
     	let t2_value = /*searchResults*/ ctx[0].length + "";
     	let t2;
     	let t3;
     	let t4;
-    	let div3;
+    	let div1;
     	let t5;
+    	let ul;
     	let mounted;
     	let dispose;
-    	let each_value_1 = /*TypeOptions*/ ctx[3];
+    	let each_value_1 = /*TypeOptions*/ ctx[4];
     	validate_each_argument(each_value_1);
     	let each_blocks_1 = [];
 
@@ -609,24 +611,23 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			div4 = element("div");
-    			div1 = element("div");
+    			div3 = element("div");
     			input = element("input");
     			t0 = space();
-    			div0 = element("div");
+    			div2 = element("div");
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				each_blocks_1[i].c();
     			}
 
     			t1 = space();
-    			ul = element("ul");
-    			div2 = element("div");
-    			span = element("span");
+    			div0 = element("div");
     			t2 = text(t2_value);
     			t3 = text(" Indexed");
     			t4 = space();
-    			div3 = element("div");
+    			div1 = element("div");
     			t5 = space();
+    			ul = element("ul");
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
@@ -634,44 +635,44 @@ var app = (function () {
 
     			attr_dev(input, "class", "query-input");
     			attr_dev(input, "placeholder", "Filter by typing name");
-    			add_location(input, file, 141, 0, 3418);
-    			attr_dev(div0, "class", "types svelte-wnbc8j");
-    			add_location(div0, file, 153, 0, 3718);
-    			attr_dev(div1, "class", "form svelte-wnbc8j");
-    			add_location(div1, file, 140, 0, 3399);
-    			add_location(span, file, 175, 8, 4278);
-    			add_location(div2, file, 174, 4, 4264);
-    			attr_dev(div3, "class", "loading svelte-wnbc8j");
-    			add_location(div3, file, 179, 4, 4359);
-    			attr_dev(ul, "class", "browse svelte-wnbc8j");
-    			add_location(ul, file, 172, 0, 4214);
-    			attr_dev(div4, "class", "main svelte-wnbc8j");
-    			add_location(div4, file, 136, 0, 3301);
+    			add_location(input, file, 141, 0, 3372);
+    			attr_dev(div0, "class", "index-count svelte-tru1b8");
+    			add_location(div0, file, 169, 4, 4182);
+    			attr_dev(div1, "class", "svelte-tru1b8");
+    			toggle_class(div1, "loading", /*isLoading*/ ctx[3]);
+    			add_location(div1, file, 172, 4, 4262);
+    			attr_dev(div2, "class", "types svelte-tru1b8");
+    			add_location(div2, file, 153, 0, 3672);
+    			attr_dev(div3, "class", "form svelte-tru1b8");
+    			add_location(div3, file, 140, 0, 3353);
+    			attr_dev(ul, "class", "browse svelte-tru1b8");
+    			add_location(ul, file, 177, 0, 4320);
+    			attr_dev(div4, "class", "main svelte-tru1b8");
+    			add_location(div4, file, 136, 0, 3255);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div4, anchor);
-    			append_dev(div4, div1);
-    			append_dev(div1, input);
+    			append_dev(div4, div3);
+    			append_dev(div3, input);
     			set_input_value(input, /*searchQuery*/ ctx[2]);
-    			append_dev(div1, t0);
-    			append_dev(div1, div0);
+    			append_dev(div3, t0);
+    			append_dev(div3, div2);
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
-    				each_blocks_1[i].m(div0, null);
+    				each_blocks_1[i].m(div2, null);
     			}
 
-    			append_dev(div4, t1);
+    			append_dev(div2, t1);
+    			append_dev(div2, div0);
+    			append_dev(div0, t2);
+    			append_dev(div0, t3);
+    			append_dev(div2, t4);
+    			append_dev(div2, div1);
+    			append_dev(div4, t5);
     			append_dev(div4, ul);
-    			append_dev(ul, div2);
-    			append_dev(div2, span);
-    			append_dev(span, t2);
-    			append_dev(span, t3);
-    			append_dev(ul, t4);
-    			append_dev(ul, div3);
-    			append_dev(ul, t5);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].m(ul, null);
@@ -679,8 +680,8 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input, "input", /*input_input_handler*/ ctx[8]),
-    					listen_dev(input, "input", /*input_handler*/ ctx[9], false, false, false)
+    					listen_dev(input, "input", /*input_input_handler*/ ctx[9]),
+    					listen_dev(input, "input", /*input_handler*/ ctx[10], false, false, false)
     				];
 
     				mounted = true;
@@ -691,8 +692,8 @@ var app = (function () {
     				set_input_value(input, /*searchQuery*/ ctx[2]);
     			}
 
-    			if (dirty & /*TypeOptions, searchType, clearResults, clearSearch, searchAll, startAutosearch*/ 122) {
-    				each_value_1 = /*TypeOptions*/ ctx[3];
+    			if (dirty & /*TypeOptions, searchType, clearResults, clearSearch, searchAll, startAutosearch*/ 242) {
+    				each_value_1 = /*TypeOptions*/ ctx[4];
     				validate_each_argument(each_value_1);
     				let i;
 
@@ -704,7 +705,7 @@ var app = (function () {
     					} else {
     						each_blocks_1[i] = create_each_block_1(child_ctx);
     						each_blocks_1[i].c();
-    						each_blocks_1[i].m(div0, null);
+    						each_blocks_1[i].m(div2, t1);
     					}
     				}
 
@@ -716,6 +717,10 @@ var app = (function () {
     			}
 
     			if (dirty & /*searchResults*/ 1 && t2_value !== (t2_value = /*searchResults*/ ctx[0].length + "")) set_data_dev(t2, t2_value);
+
+    			if (dirty & /*isLoading*/ 8) {
+    				toggle_class(div1, "loading", /*isLoading*/ ctx[3]);
+    			}
 
     			if (dirty & /*color, searchResults, console, post*/ 1) {
     				each_value = /*searchResults*/ ctx[0];
@@ -844,8 +849,7 @@ var app = (function () {
     	let searchResults = [];
     	let searchType = "data";
     	let searchQuery = "";
-    	let showMoreButton;
-    	let showMoreFlag = true;
+    	let isLoading = false;
 
     	onMount(async () => {
     		// this is used to recieve message from sidebar provider
@@ -855,14 +859,12 @@ var app = (function () {
     			switch (message.type) {
     				case "result":
     					{
-    						showMoreFlag = true;
     						$$invalidate(0, searchResults = message.value);
     						break;
     					}
     				case "partial-result":
     					{
     						console.log("partial-result", message.value);
-    						showMoreFlag = true;
 
     						// append
     						$$invalidate(0, searchResults = searchResults.concat(message.value));
@@ -874,9 +876,7 @@ var app = (function () {
     					}
     				case "results-exhausted":
     					{
-    						// showMoreFlag = false
     						console.log("exhausted");
-
     						stopAutosearch();
     						break;
     					}
@@ -885,9 +885,13 @@ var app = (function () {
 
     		// this is used to send message to provider
     		// tsvscode.postMessage({ type: "get-token", value: undefined });
-    		searchAll("data");
-
-    		startAutosearch();
+    		setTimeout(
+    			() => {
+    				searchAll("data");
+    				startAutosearch();
+    			},
+    			3000
+    		);
     	});
 
     	function clearResults() {
@@ -903,10 +907,12 @@ var app = (function () {
     	function startAutosearch() {
     		stopAutosearch();
     		autoSearch = setInterval(() => showMore(), 1000);
+    		$$invalidate(3, isLoading = true);
     	}
 
     	function stopAutosearch() {
     		clearInterval(autoSearch);
+    		$$invalidate(3, isLoading = false);
     	}
 
     	function searchSymbol(query) {
@@ -969,8 +975,7 @@ var app = (function () {
     		searchResults,
     		searchType,
     		searchQuery,
-    		showMoreButton,
-    		showMoreFlag,
+    		isLoading,
     		clearResults,
     		clearSearch,
     		startAutosearch,
@@ -993,8 +998,7 @@ var app = (function () {
     		if ('searchResults' in $$props) $$invalidate(0, searchResults = $$props.searchResults);
     		if ('searchType' in $$props) $$invalidate(1, searchType = $$props.searchType);
     		if ('searchQuery' in $$props) $$invalidate(2, searchQuery = $$props.searchQuery);
-    		if ('showMoreButton' in $$props) showMoreButton = $$props.showMoreButton;
-    		if ('showMoreFlag' in $$props) showMoreFlag = $$props.showMoreFlag;
+    		if ('isLoading' in $$props) $$invalidate(3, isLoading = $$props.isLoading);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -1005,6 +1009,7 @@ var app = (function () {
     		searchResults,
     		searchType,
     		searchQuery,
+    		isLoading,
     		TypeOptions,
     		clearResults,
     		clearSearch,
