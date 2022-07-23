@@ -32,7 +32,7 @@ import { onMount } from "svelte";
         },
         {
             value: "process",
-            label: "Process (Function)"
+            label: "Function"
         },
         {
             value: "container",

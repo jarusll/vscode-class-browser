@@ -433,11 +433,11 @@ var app = (function () {
     			attr_dev(input, "name", "types");
     			attr_dev(input, "class", "input-type svelte-tru1b8");
     			/*$$binding_groups*/ ctx[13][0].push(input);
-    			add_location(input, file, 156, 8, 3753);
+    			add_location(input, file, 156, 8, 3743);
     			attr_dev(label, "for", /*option*/ ctx[22].value);
-    			add_location(label, file, 165, 8, 4084);
+    			add_location(label, file, 165, 8, 4074);
     			attr_dev(div, "class", "type svelte-tru1b8");
-    			add_location(div, file, 155, 4, 3726);
+    			add_location(div, file, 155, 4, 3716);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -515,14 +515,14 @@ var app = (function () {
     			t2 = text(t2_value);
     			t3 = space();
     			attr_dev(span0, "class", "class svelte-tru1b8");
-    			add_location(span0, file, 193, 16, 4993);
+    			add_location(span0, file, 193, 16, 4983);
     			attr_dev(span1, "class", "container");
-    			add_location(span1, file, 194, 16, 5053);
+    			add_location(span1, file, 194, 16, 5043);
     			attr_dev(button, "class", "symbol svelte-tru1b8");
     			attr_dev(button, "title", button_title_value = /*classType*/ ctx[19]?.kind.toString() + " " + /*classType*/ ctx[19]?.name);
-    			add_location(button, file, 182, 12, 4575);
+    			add_location(button, file, 182, 12, 4565);
     			attr_dev(li, "style", li_style_value = `color: ${color(/*classType*/ ctx[19]?.kind.toString())};`);
-    			add_location(li, file, 180, 2, 4398);
+    			add_location(li, file, 180, 2, 4388);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -635,20 +635,20 @@ var app = (function () {
 
     			attr_dev(input, "class", "query-input");
     			attr_dev(input, "placeholder", "Filter by typing name");
-    			add_location(input, file, 141, 0, 3372);
+    			add_location(input, file, 141, 0, 3362);
     			attr_dev(div0, "class", "index-count svelte-tru1b8");
-    			add_location(div0, file, 169, 4, 4182);
+    			add_location(div0, file, 169, 4, 4172);
     			attr_dev(div1, "class", "svelte-tru1b8");
     			toggle_class(div1, "loading", /*isLoading*/ ctx[3]);
-    			add_location(div1, file, 172, 4, 4262);
+    			add_location(div1, file, 172, 4, 4252);
     			attr_dev(div2, "class", "types svelte-tru1b8");
-    			add_location(div2, file, 153, 0, 3672);
+    			add_location(div2, file, 153, 0, 3662);
     			attr_dev(div3, "class", "form svelte-tru1b8");
-    			add_location(div3, file, 140, 0, 3353);
+    			add_location(div3, file, 140, 0, 3343);
     			attr_dev(ul, "class", "browse svelte-tru1b8");
-    			add_location(ul, file, 177, 0, 4320);
+    			add_location(ul, file, 177, 0, 4310);
     			attr_dev(div4, "class", "main svelte-tru1b8");
-    			add_location(div4, file, 136, 0, 3255);
+    			add_location(div4, file, 136, 0, 3245);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -836,10 +836,7 @@ var app = (function () {
     			value: "data",
     			label: "Data (Class/Interface/Struct/Enum)"
     		},
-    		{
-    			value: "process",
-    			label: "Process (Function)"
-    		},
+    		{ value: "process", label: "Function" },
     		{
     			value: "container",
     			label: "Container (Namespace/Package/Module)"
