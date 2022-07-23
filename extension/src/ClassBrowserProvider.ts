@@ -1,8 +1,13 @@
+import { exec } from "child_process";
 import * as vscode from "vscode";
 import { alphabets } from "./constants/alphabets";
+import ExecutionQueue from "./ExecutionQueue";
 import { isAll, isClass, isData, isInterface, isStruct, isContainer, isProcess } from "./functions/symbolPredicates";
 import { getNonce } from "./getNonce";
+import Thunk from "./Thunk";
 import { WorkspaceSymbolsFacade } from "./WorkspaceSymbolsFacade";
+
+const execQueue = new ExecutionQueue();
 
 export class ClassBrowserProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
@@ -30,11 +35,29 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
 
     const connectedWebview = webviewView.webview;
 
+    //#region theonlythingwhichmatters
     connectedWebview.onDidReceiveMessage(async (data) => {
-      console.log(data);;
       switch (data.type) {
+        case "reset":
+          execQueue.reset();
+          break;
+        case "show-more":
+          const partialResult = await execQueue.lazyExec();
+          if (partialResult === false) {
+            connectedWebview.postMessage({
+              type: "results-exhausted",
+              value: ""
+            });
+          } else {
+            connectedWebview.postMessage({
+              type: "partial-result",
+              value: partialResult
+            });
+          }
+          break;
         case "search-all":
-          const {type, query} = data.value;
+          execQueue.reset();
+          const { type, query } = data.value;
           let typePredicate: Function;
           if (type === "data") {
             typePredicate = isData;
@@ -45,83 +68,62 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
           else {
             typePredicate = isContainer;
           }
-          alphabets.forEach(character => {
-            WorkspaceSymbolsFacade.fetch(character.toString())
-              .then(function (symbols: vscode.SymbolInformation[]) {
-                console.log("all",symbols.filter((x: vscode.SymbolInformation) => typePredicate(x)) );
-                connectedWebview.postMessage({
-                  type: "partial-result",
-                  value: symbols.filter((x: vscode.SymbolInformation) => typePredicate(x))
-                });
-              });
+          // TODO replace this with a SearchPolicy
+          alphabets.forEach(async (character) => {
+            execQueue.enqueue(new Thunk(async () => {
+              const symbols = await WorkspaceSymbolsFacade.fetch(character.toString());
+              return symbols.filter((x: vscode.SymbolInformation) => typePredicate(x));
+            }));
           });
           break;
         case "search-data":
-          WorkspaceSymbolsFacade.fetch(data.value)
-            .then(
-              function (symbols: vscode.SymbolInformation[]) {
-                console.log("data", symbols.filter(x => isData(x)));
-                connectedWebview.postMessage({
-                  type: "result",
-                  value: symbols.filter(x => isData(x))
-                });
-              });
+          execQueue.reset();
+          execQueue.enqueue(new Thunk(async () => {
+            const symbols = await WorkspaceSymbolsFacade.fetch(data.value);
+            return symbols.filter((x: vscode.SymbolInformation) => isData(x));
+          }));
           break;
         case "search-process":
-          WorkspaceSymbolsFacade.fetch(data.value)
-            .then(
-              function (symbols: vscode.SymbolInformation[]) {
-                console.log("functions", symbols.filter(x => isProcess(x)));
-                connectedWebview.postMessage({
-                  type: "result",
-                  value: symbols.filter(x => isProcess(x))
-                });
-              });
+          execQueue.reset();
+          execQueue.enqueue(new Thunk(async () => {
+            const symbols = await WorkspaceSymbolsFacade.fetch(data.value);
+            return symbols.filter((x: vscode.SymbolInformation) => isProcess(x));
+          }));
           break;
         case "search-container":
-          WorkspaceSymbolsFacade.fetch(data.value)
-            .then(
-              function (symbols: vscode.SymbolInformation[]) {
-                console.log("container", symbols.filter(x => isContainer(x)));
-                connectedWebview.postMessage({
-                  type: "result",
-                  value: symbols.filter(x => isContainer(x))
-                });
-              });
+          execQueue.reset();
+          execQueue.enqueue(new Thunk(async () => {
+            const symbols = await WorkspaceSymbolsFacade.fetch(data.value);
+            return symbols.filter((x: vscode.SymbolInformation) => isContainer(x));
+          }));
           break;
-        case "open": {
+        case "open":
           const openPath = vscode.Uri.file(data.value.path);
           vscode.workspace.openTextDocument(openPath).then(async (doc) => {
             await vscode.window.showTextDocument(doc, vscode.ViewColumn.One);
             const myPos = new vscode.Position(data.value.position.line, data.value.position.character);     // I think you know how to get the values, let us know if you don't
             vscode.window.activeTextEditor!.selections = [new vscode.Selection(myPos, myPos)];
-            await vscode.window.activeTextEditor!.revealRange(new vscode.Range(myPos, myPos));
+            vscode.window.activeTextEditor!.revealRange(new vscode.Range(myPos, myPos));
             await vscode.commands.executeCommand(
               "outline.focus"
             );
           });
-        }
           break;
-        case "search-method": {
-          // TODO implement
-          break;
-        }
-        case "onInfo": {
+        case "onInfo":
           if (!data.value) {
             return;
           }
           vscode.window.showInformationMessage(data.value);
           break;
-        }
-        case "onError": {
+        case "onError":
           if (!data.value) {
             return;
           }
           vscode.window.showErrorMessage(data.value);
           break;
         }
-      }
     });
+    //#endregion theonlythingwhichmatters
   }
 
   public revive(panel: vscode.WebviewView) {
