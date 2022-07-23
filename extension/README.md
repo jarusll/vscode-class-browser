@@ -7,7 +7,7 @@ A vscode extension which indexes
 
 # Showcase
 
-![Alt Text](https://github.com/jarusll/vscode-class-browser/blob/master/extension/media/showcase.gif?raw=true)
+![Alt Text](./media/showcase.gif)
 
 # Recommendation
 It pairs up really well with Outline view so if you do plan to use it, I recommend use it along with the outline view.
