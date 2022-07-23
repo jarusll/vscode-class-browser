@@ -1,4 +1,10 @@
-# Class Browser
+<p align="center">
+  <img src="media/icon.png" />
+</p>
+
+<h2 align="center">
+Class Browser
+</h2>
 
 A vscode extension which indexes 
 - Data(classes/interfaces/structs/enums)
