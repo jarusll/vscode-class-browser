@@ -7,7 +7,7 @@ import { getNonce } from "./getNonce";
 import Thunk from "./Thunk";
 import { WorkspaceSymbolsFacade } from "./WorkspaceSymbolsFacade";
 
-const execQueue = new ExecutionQueue()
+const execQueue = new ExecutionQueue();
 
 export class ClassBrowserProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
@@ -35,24 +35,28 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
 
     const connectedWebview = webviewView.webview;
 
+    //#region theonlythingwhichmatters
     connectedWebview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
+        case "reset":
+          execQueue.reset();
+          break;
         case "show-more":
-          const halfResult = await execQueue.lazyExec()
-          if (halfResult[0] === false){
+          const partialResult = await execQueue.lazyExec();
+          if (partialResult[0] === false) {
             connectedWebview.postMessage({
               type: "results-exhausted",
               value: ""
             });
           } else {
             connectedWebview.postMessage({
-              type: "half-result",
-              value: halfResult
+              type: "partial-result",
+              value: partialResult
             });
           }
           break;
         case "search-all":
-          execQueue.reset()
+          execQueue.reset();
           const { type, query } = data.value;
           let typePredicate: Function;
           if (type === "data") {
@@ -66,46 +70,33 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
           }
           alphabets.forEach(async (character) => {
             execQueue.enqueue(new Thunk(async () => {
-              const symbols = await WorkspaceSymbolsFacade.fetch(character.toString())
-              return symbols.filter((x: vscode.SymbolInformation) => typePredicate(x))
-            }))
+              const symbols = await WorkspaceSymbolsFacade.fetch(character.toString());
+              return symbols.filter((x: vscode.SymbolInformation) => typePredicate(x));
+            }));
           });
-          await execQueue.lazyExec()
           break;
         case "search-data":
-          WorkspaceSymbolsFacade.fetch(data.value)
-            .then(
-              function (symbols: vscode.SymbolInformation[]) {
-                console.log("data", symbols.filter(x => isData(x)));
-                connectedWebview.postMessage({
-                  type: "result",
-                  value: symbols.filter(x => isData(x))
-                });
-              });
+          execQueue.reset();
+          execQueue.enqueue(new Thunk(async () => {
+            const symbols = await WorkspaceSymbolsFacade.fetch(data.value);
+            return symbols.filter((x: vscode.SymbolInformation) => isData(x));
+          }));
           break;
         case "search-process":
-          WorkspaceSymbolsFacade.fetch(data.value)
-            .then(
-              function (symbols: vscode.SymbolInformation[]) {
-                console.log("functions", symbols.filter(x => isProcess(x)));
-                connectedWebview.postMessage({
-                  type: "result",
-                  value: symbols.filter(x => isProcess(x))
-                });
-              });
+          execQueue.reset();
+          execQueue.enqueue(new Thunk(async () => {
+            const symbols = await WorkspaceSymbolsFacade.fetch(data.value);
+            return symbols.filter((x: vscode.SymbolInformation) => isProcess(x));
+          }));
           break;
         case "search-container":
-          WorkspaceSymbolsFacade.fetch(data.value)
-            .then(
-              function (symbols: vscode.SymbolInformation[]) {
-                console.log("container", symbols.filter(x => isContainer(x)));
-                connectedWebview.postMessage({
-                  type: "result",
-                  value: symbols.filter(x => isContainer(x))
-                });
-              });
+          execQueue.reset();
+          execQueue.enqueue(new Thunk(async () => {
+            const symbols = await WorkspaceSymbolsFacade.fetch(data.value);
+            return symbols.filter((x: vscode.SymbolInformation) => isContainer(x));
+          }));
           break;
-        case "open": {
+        case "open":
           const openPath = vscode.Uri.file(data.value.path);
           vscode.workspace.openTextDocument(openPath).then(async (doc) => {
             await vscode.window.showTextDocument(doc, vscode.ViewColumn.One);
@@ -116,28 +107,22 @@ export class ClassBrowserProvider implements vscode.WebviewViewProvider {
               "outline.focus"
             );
           });
-        }
           break;
-        case "search-method": {
-          // TODO implement
-          break;
-        }
-        case "onInfo": {
+        case "onInfo":
           if (!data.value) {
             return;
           }
           vscode.window.showInformationMessage(data.value);
           break;
-        }
-        case "onError": {
+        case "onError":
           if (!data.value) {
             return;
           }
           vscode.window.showErrorMessage(data.value);
           break;
         }
-      }
     });
+    //#endregion theonlythingwhichmatters
   }
 
   public revive(panel: vscode.WebviewView) {

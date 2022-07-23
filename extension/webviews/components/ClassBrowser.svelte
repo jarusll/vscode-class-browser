@@ -57,20 +57,9 @@ import { onMount } from "svelte";
                     break;
                 }
                 case "partial-result": {
+                    console.log("partial-result", message.value)
                     showMoreFlag = true
                     // append
-                    searchResults = searchResults.concat(message.value)
-                    // remove duplicates
-                    searchResults = searchResults.filter((value: any, index, self) =>
-                        index === self.findIndex((t: any) => (
-                            t.name === value.name
-                        )))
-                    break;
-                }
-                case "half-result": {
-                    showMoreFlag = true
-                    // append
-                    console.log("more", message.value)
                     searchResults = searchResults.concat(message.value)
                     // remove duplicates
                     searchResults = searchResults.filter((value: any, index, self) =>
@@ -80,8 +69,9 @@ import { onMount } from "svelte";
                     break;
                 }
                 case "results-exhausted": {
-                    showMoreFlag = false
-                    // clearInterval(autoSearch)
+                    // showMoreFlag = false
+                    console.log("exhausted")
+                    stopAutosearch()
                     break;
                 }
             }
@@ -89,11 +79,33 @@ import { onMount } from "svelte";
 
         // this is used to send message to provider
         // tsvscode.postMessage({ type: "get-token", value: undefined });
-        // searchAll("data")
+        searchAll("data")
+        startAutosearch()
     });
 
     function clearResults() {
         searchResults = []
+        stopAutosearch()
+        resetBackend()
+    }
+
+    function clearSearch(){
+        searchQuery = ""
+    }
+
+    function startAutosearch(){
+        autoSearch = setInterval(() => showMore(), 1000)
+    }
+
+    function stopAutosearch(){
+        clearInterval(autoSearch)
+    }
+
+    function resetBackend(){
+        post({
+            type: "reset",
+            value: ""
+        })
     }
 
     function post(message: {type: String, value: any}) {
@@ -130,12 +142,15 @@ import { onMount } from "svelte";
     }
 
     function searchSymbol(query: string){
+        stopAutosearch()
+        clearResults()
         if (searchType === "data")
             searchData(query)
         else if (searchType === "process")
             searchProcess(query)
         else 
             searchContainer(query)
+        startAutosearch()
     }
 
     function open(query: String){
@@ -176,19 +191,25 @@ import { onMount } from "svelte";
 </span>
 <div class="form">
 <input bind:value={searchQuery} on:input={() => {
-    if (searchQuery === "*")
+    if (searchQuery === ""){
+        clearResults()
         searchAll(searchType)
-    else 
+    }
+    else {
         searchSymbol(searchQuery)
+    }
 }} class="query-input" placeholder="Filter by typing name"/>
 
 <div class="types">
 {#each TypeOptions as option}
     <div class="type">
         <input type="radio" id={option.value} value={option.value} 
+            name="types"
             on:change={() => {
                 clearResults()
+                clearSearch()
                 searchAll(option.value)
+                startAutosearch()
             }}
             bind:group={searchType} class="input-type"/>
         <label for={option.value}>{option.label}</label>
@@ -196,12 +217,12 @@ import { onMount } from "svelte";
 {/each}
 
 </div>
-{#if showMoreFlag}
+<!-- {#if showMoreFlag}
     <button bind:this={showMoreButton} on:click={showMore}>Show More</button>
-{/if}
+{/if} -->
 </div>
 
-<ul on:scroll={(e) => showMore()} class="browse">
+<ul class="browse">
 	{#each searchResults as classType}
 		<li style={`color: ${color(classType?.kind.toString())};`} on:scroll={() => console.log("list scrolling")} 
                 on:select={() => console.log("select")}>
