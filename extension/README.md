@@ -1,19 +1,14 @@
-<p align="center">
-  <img src="media/icon.png" />
-</p>
+![Icon](https://github.com/jarusll/vscode-class-browser/blob/master/extension/media/icon.png?raw=true)
+# Class Browser
 
-<h2 align="center">
-Class Browser
-</h2>
-
-A vscode extension which indexes 
+A vscode extension which indexes
 - Data(classes/interfaces/structs/enums)
 - Function
 - Container(namespace/module/package)
 
 # Showcase
 
-![Alt Text](./media/showcase.gif)
+![Alt Text](https://github.com/jarusll/vscode-class-browser/blob/master/extension/media/showcase.gif?raw=true)
 
 # Recommendation
 It pairs up really well with Outline view so if you do plan to use it, I recommend use it along with the outline view.
@@ -29,7 +24,7 @@ It will index files which are not in project path. For eg It will index all the 
 
 While switching between types the results could overlap.
 
-~~Performance issues may arise from excessive indexing.~~ Lazy fetching has been added to fix this. 
+~~Performance issues may arise from excessive indexing.~~ Lazy fetching has been added to fix this.
 
 # Done
 - [x] List all classes
@@ -46,7 +41,7 @@ While switching between types the results could overlap.
 ## Release Notes
 ### 1.0.0
 Added lazy fetching. Symbols are fetched every 1 second. This will fix the performance issue.
-UI enhancements 
+UI enhancements
 - Fetching indicator
 - Scrollable results section
 

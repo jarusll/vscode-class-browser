@@ -392,30 +392,33 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[19] = list[i];
+    	child_ctx[20] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[22] = list[i];
+    	child_ctx[23] = list[i];
     	return child_ctx;
     }
 
-    // (155:0) {#each TypeOptions as option}
+    // (164:0) {#each TypeOptions as option}
     function create_each_block_1(ctx) {
     	let div;
     	let input;
+    	let input_id_value;
+    	let input_value_value;
     	let t0;
     	let label;
-    	let t1_value = /*option*/ ctx[22].label + "";
+    	let t1_value = /*option*/ ctx[23].label + "";
     	let t1;
+    	let label_for_value;
     	let t2;
     	let mounted;
     	let dispose;
 
     	function change_handler() {
-    		return /*change_handler*/ ctx[11](/*option*/ ctx[22]);
+    		return /*change_handler*/ ctx[11](/*option*/ ctx[23]);
     	}
 
     	const block = {
@@ -427,17 +430,17 @@ var app = (function () {
     			t1 = text(t1_value);
     			t2 = space();
     			attr_dev(input, "type", "radio");
-    			attr_dev(input, "id", /*option*/ ctx[22].value);
-    			input.__value = /*option*/ ctx[22].value;
+    			attr_dev(input, "id", input_id_value = /*option*/ ctx[23].value);
+    			input.__value = input_value_value = /*option*/ ctx[23].value;
     			input.value = input.__value;
     			attr_dev(input, "name", "types");
     			attr_dev(input, "class", "input-type svelte-tru1b8");
     			/*$$binding_groups*/ ctx[13][0].push(input);
-    			add_location(input, file, 156, 8, 3743);
-    			attr_dev(label, "for", /*option*/ ctx[22].value);
-    			add_location(label, file, 165, 8, 4074);
+    			add_location(input, file, 165, 8, 4508);
+    			attr_dev(label, "for", label_for_value = /*option*/ ctx[23].value);
+    			add_location(label, file, 174, 8, 4839);
     			attr_dev(div, "class", "type svelte-tru1b8");
-    			add_location(div, file, 155, 4, 3716);
+    			add_location(div, file, 164, 4, 4481);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -476,23 +479,23 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(155:0) {#each TypeOptions as option}",
+    		source: "(164:0) {#each TypeOptions as option}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (180:1) {#each searchResults as classType}
+    // (189:1) {#each searchResults as classType}
     function create_each_block(ctx) {
     	let li;
     	let button;
     	let span0;
-    	let t0_value = /*classType*/ ctx[19].name + "";
+    	let t0_value = /*classType*/ ctx[20].name + "";
     	let t0;
     	let t1;
     	let span1;
-    	let t2_value = (/*classType*/ ctx[19]?.containerName || "") + "";
+    	let t2_value = (/*classType*/ ctx[20]?.containerName || "") + "";
     	let t2;
     	let button_title_value;
     	let t3;
@@ -501,7 +504,7 @@ var app = (function () {
     	let dispose;
 
     	function click_handler() {
-    		return /*click_handler*/ ctx[14](/*classType*/ ctx[19]);
+    		return /*click_handler*/ ctx[14](/*classType*/ ctx[20]);
     	}
 
     	const block = {
@@ -515,14 +518,14 @@ var app = (function () {
     			t2 = text(t2_value);
     			t3 = space();
     			attr_dev(span0, "class", "class svelte-tru1b8");
-    			add_location(span0, file, 193, 16, 4983);
+    			add_location(span0, file, 202, 16, 5748);
     			attr_dev(span1, "class", "container");
-    			add_location(span1, file, 194, 16, 5043);
+    			add_location(span1, file, 203, 16, 5808);
     			attr_dev(button, "class", "symbol svelte-tru1b8");
-    			attr_dev(button, "title", button_title_value = /*classType*/ ctx[19]?.kind.toString() + " " + /*classType*/ ctx[19]?.name);
-    			add_location(button, file, 182, 12, 4565);
-    			attr_dev(li, "style", li_style_value = `color: ${color(/*classType*/ ctx[19]?.kind.toString())};`);
-    			add_location(li, file, 180, 2, 4388);
+    			attr_dev(button, "title", button_title_value = /*classType*/ ctx[20]?.kind.toString() + " " + /*classType*/ ctx[20]?.name);
+    			add_location(button, file, 191, 12, 5330);
+    			attr_dev(li, "style", li_style_value = `color: ${color(/*classType*/ ctx[20]?.kind.toString())};`);
+    			add_location(li, file, 189, 2, 5153);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -546,14 +549,14 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*searchResults*/ 1 && t0_value !== (t0_value = /*classType*/ ctx[19].name + "")) set_data_dev(t0, t0_value);
-    			if (dirty & /*searchResults*/ 1 && t2_value !== (t2_value = (/*classType*/ ctx[19]?.containerName || "") + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*searchResults*/ 1 && t0_value !== (t0_value = /*classType*/ ctx[20].name + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*searchResults*/ 1 && t2_value !== (t2_value = (/*classType*/ ctx[20]?.containerName || "") + "")) set_data_dev(t2, t2_value);
 
-    			if (dirty & /*searchResults*/ 1 && button_title_value !== (button_title_value = /*classType*/ ctx[19]?.kind.toString() + " " + /*classType*/ ctx[19]?.name)) {
+    			if (dirty & /*searchResults*/ 1 && button_title_value !== (button_title_value = /*classType*/ ctx[20]?.kind.toString() + " " + /*classType*/ ctx[20]?.name)) {
     				attr_dev(button, "title", button_title_value);
     			}
 
-    			if (dirty & /*searchResults*/ 1 && li_style_value !== (li_style_value = `color: ${color(/*classType*/ ctx[19]?.kind.toString())};`)) {
+    			if (dirty & /*searchResults*/ 1 && li_style_value !== (li_style_value = `color: ${color(/*classType*/ ctx[20]?.kind.toString())};`)) {
     				attr_dev(li, "style", li_style_value);
     			}
     		},
@@ -568,7 +571,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(180:1) {#each searchResults as classType}",
+    		source: "(189:1) {#each searchResults as classType}",
     		ctx
     	});
 
@@ -635,20 +638,20 @@ var app = (function () {
 
     			attr_dev(input, "class", "query-input");
     			attr_dev(input, "placeholder", "Filter by typing name");
-    			add_location(input, file, 141, 0, 3362);
+    			add_location(input, file, 150, 0, 4127);
     			attr_dev(div0, "class", "index-count svelte-tru1b8");
-    			add_location(div0, file, 169, 4, 4172);
+    			add_location(div0, file, 178, 4, 4937);
     			attr_dev(div1, "class", "svelte-tru1b8");
     			toggle_class(div1, "loading", /*isLoading*/ ctx[3]);
-    			add_location(div1, file, 172, 4, 4252);
+    			add_location(div1, file, 181, 4, 5017);
     			attr_dev(div2, "class", "types svelte-tru1b8");
-    			add_location(div2, file, 153, 0, 3662);
+    			add_location(div2, file, 162, 0, 4427);
     			attr_dev(div3, "class", "form svelte-tru1b8");
-    			add_location(div3, file, 140, 0, 3343);
+    			add_location(div3, file, 149, 0, 4108);
     			attr_dev(ul, "class", "browse svelte-tru1b8");
-    			add_location(ul, file, 177, 0, 4310);
+    			add_location(ul, file, 186, 0, 5075);
     			attr_dev(div4, "class", "main svelte-tru1b8");
-    			add_location(div4, file, 136, 0, 3245);
+    			add_location(div4, file, 145, 0, 4010);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -829,6 +832,43 @@ var app = (function () {
     function instance($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('ClassBrowser', slots, []);
+
+    	var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
+    		function adopt(value) {
+    			return value instanceof P
+    			? value
+    			: new P(function (resolve) {
+    						resolve(value);
+    					});
+    		}
+
+    		return new (P || (P = Promise))(function (resolve, reject) {
+    				function fulfilled(value) {
+    					try {
+    						step(generator.next(value));
+    					} catch(e) {
+    						reject(e);
+    					}
+    				}
+
+    				function rejected(value) {
+    					try {
+    						step(generator["throw"](value));
+    					} catch(e) {
+    						reject(e);
+    					}
+    				}
+
+    				function step(result) {
+    					result.done
+    					? resolve(result.value)
+    					: adopt(result.value).then(fulfilled, rejected);
+    				}
+
+    				step((generator = generator.apply(thisArg, _arguments || [])).next());
+    			});
+    	};
+
     	let autoSearch;
 
     	const TypeOptions = [
@@ -848,9 +888,9 @@ var app = (function () {
     	let searchQuery = "";
     	let isLoading = false;
 
-    	onMount(async () => {
+    	onMount(() => __awaiter(void 0, void 0, void 0, function* () {
     		// this is used to recieve message from sidebar provider
-    		window.addEventListener("message", async event => {
+    		window.addEventListener("message", event => __awaiter(void 0, void 0, void 0, function* () {
     			const message = event.data;
 
     			switch (message.type) {
@@ -878,7 +918,7 @@ var app = (function () {
     						break;
     					}
     			}
-    		});
+    		}));
 
     		// this is used to send message to provider
     		// tsvscode.postMessage({ type: "get-token", value: undefined });
@@ -889,7 +929,7 @@ var app = (function () {
     			},
     			3000
     		);
-    	});
+    	}));
 
     	function clearResults() {
     		$$invalidate(0, searchResults = []);
@@ -966,6 +1006,7 @@ var app = (function () {
     	const select_handler = () => console.log("select");
 
     	$$self.$capture_state = () => ({
+    		__awaiter,
     		autoSearch,
     		onMount,
     		TypeOptions,
@@ -991,6 +1032,7 @@ var app = (function () {
     	});
 
     	$$self.$inject_state = $$props => {
+    		if ('__awaiter' in $$props) __awaiter = $$props.__awaiter;
     		if ('autoSearch' in $$props) autoSearch = $$props.autoSearch;
     		if ('searchResults' in $$props) $$invalidate(0, searchResults = $$props.searchResults);
     		if ('searchType' in $$props) $$invalidate(1, searchType = $$props.searchType);
@@ -1043,5 +1085,5 @@ var app = (function () {
 
     return app;
 
-})();
+}());
 //# sourceMappingURL=classbrowser.js.map
