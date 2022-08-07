@@ -434,13 +434,13 @@ var app = (function () {
     			input.__value = input_value_value = /*option*/ ctx[23].value;
     			input.value = input.__value;
     			attr_dev(input, "name", "types");
-    			attr_dev(input, "class", "input-type svelte-tru1b8");
+    			attr_dev(input, "class", "input-type svelte-i190p8");
     			/*$$binding_groups*/ ctx[13][0].push(input);
-    			add_location(input, file, 165, 8, 4508);
+    			add_location(input, file, 165, 8, 4507);
     			attr_dev(label, "for", label_for_value = /*option*/ ctx[23].value);
-    			add_location(label, file, 174, 8, 4839);
-    			attr_dev(div, "class", "type svelte-tru1b8");
-    			add_location(div, file, 164, 4, 4481);
+    			add_location(label, file, 174, 8, 4837);
+    			attr_dev(div, "class", "type svelte-i190p8");
+    			add_location(div, file, 164, 4, 4480);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -517,15 +517,15 @@ var app = (function () {
     			span1 = element("span");
     			t2 = text(t2_value);
     			t3 = space();
-    			attr_dev(span0, "class", "class svelte-tru1b8");
-    			add_location(span0, file, 202, 16, 5748);
+    			attr_dev(span0, "class", "class svelte-i190p8");
+    			add_location(span0, file, 202, 16, 5744);
     			attr_dev(span1, "class", "container");
-    			add_location(span1, file, 203, 16, 5808);
-    			attr_dev(button, "class", "symbol svelte-tru1b8");
+    			add_location(span1, file, 203, 16, 5804);
+    			attr_dev(button, "class", "symbol svelte-i190p8");
     			attr_dev(button, "title", button_title_value = /*classType*/ ctx[20]?.kind.toString() + " " + /*classType*/ ctx[20]?.name);
-    			add_location(button, file, 191, 12, 5330);
+    			add_location(button, file, 191, 12, 5327);
     			attr_dev(li, "style", li_style_value = `color: ${color(/*classType*/ ctx[20]?.kind.toString())};`);
-    			add_location(li, file, 189, 2, 5153);
+    			add_location(li, file, 189, 2, 5151);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -638,20 +638,20 @@ var app = (function () {
 
     			attr_dev(input, "class", "query-input");
     			attr_dev(input, "placeholder", "Filter by typing name");
-    			add_location(input, file, 150, 0, 4127);
-    			attr_dev(div0, "class", "index-count svelte-tru1b8");
-    			add_location(div0, file, 178, 4, 4937);
-    			attr_dev(div1, "class", "svelte-tru1b8");
+    			add_location(input, file, 150, 0, 4126);
+    			attr_dev(div0, "class", "index-count svelte-i190p8");
+    			add_location(div0, file, 178, 4, 4935);
+    			attr_dev(div1, "class", "svelte-i190p8");
     			toggle_class(div1, "loading", /*isLoading*/ ctx[3]);
-    			add_location(div1, file, 181, 4, 5017);
-    			attr_dev(div2, "class", "types svelte-tru1b8");
-    			add_location(div2, file, 162, 0, 4427);
-    			attr_dev(div3, "class", "form svelte-tru1b8");
-    			add_location(div3, file, 149, 0, 4108);
-    			attr_dev(ul, "class", "browse svelte-tru1b8");
-    			add_location(ul, file, 186, 0, 5075);
-    			attr_dev(div4, "class", "main svelte-tru1b8");
-    			add_location(div4, file, 145, 0, 4010);
+    			add_location(div1, file, 181, 4, 5015);
+    			attr_dev(div2, "class", "types svelte-i190p8");
+    			add_location(div2, file, 162, 0, 4426);
+    			attr_dev(div3, "class", "form svelte-i190p8");
+    			add_location(div3, file, 149, 0, 4107);
+    			attr_dev(ul, "class", "browse svelte-i190p8");
+    			add_location(ul, file, 186, 0, 5073);
+    			attr_dev(div4, "class", "main svelte-i190p8");
+    			add_location(div4, file, 145, 0, 4009);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -927,7 +927,7 @@ var app = (function () {
     				searchAll("data");
     				startAutosearch();
     			},
-    			3000
+    			1000
     		);
     	}));
 
@@ -943,7 +943,7 @@ var app = (function () {
 
     	function startAutosearch() {
     		stopAutosearch();
-    		autoSearch = setInterval(() => showMore(), 1000);
+    		autoSearch = setInterval(() => showMore(), 100);
     		$$invalidate(3, isLoading = true);
     	}
 

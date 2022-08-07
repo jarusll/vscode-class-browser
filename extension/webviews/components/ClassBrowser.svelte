@@ -78,7 +78,7 @@ import { onMount } from "svelte";
         setTimeout(() => {
             searchAll("data")
             startAutosearch()
-        }, 3000);
+        }, 1000);
     });
 
     function clearResults() {
@@ -93,7 +93,7 @@ import { onMount } from "svelte";
 
     function startAutosearch(){
         stopAutosearch()
-        autoSearch = setInterval(() => showMore(), 1000)
+        autoSearch = setInterval(() => showMore(), 100)
         isLoading = true
     }
 
@@ -147,7 +147,7 @@ import { onMount } from "svelte";
             searchData(query)
         else if (searchType === "process")
             searchProcess(query)
-        else 
+        else
             searchContainer(query)
     }
 
@@ -200,7 +200,7 @@ import { onMount } from "svelte";
 <div class="types">
 {#each TypeOptions as option}
     <div class="type">
-        <input type="radio" id={option.value} value={option.value} 
+        <input type="radio" id={option.value} value={option.value}
             name="types"
             on:change={() => {
                 clearResults()
@@ -224,9 +224,9 @@ import { onMount } from "svelte";
 <ul class="browse">
     <!-- result -->
 	{#each searchResults as classType}
-		<li style={`color: ${color(classType?.kind.toString())};`} on:scroll={() => console.log("list scrolling")} 
+		<li style={`color: ${color(classType?.kind.toString())};`} on:scroll={() => console.log("list scrolling")}
                 on:select={() => console.log("select")}>
-            <button class="symbol" 
+            <button class="symbol"
                 title={classType?.kind.toString() + " " + classType?.name}
                 on:click={() => {
                 post({
@@ -273,7 +273,7 @@ import { onMount } from "svelte";
     }
     .browse {
         position: relative;
-        overflow-y: scroll; 
+        overflow-y: scroll;
         overflow-x: hidden;
         /* height: 82%; */
         list-style-type: square;
@@ -295,7 +295,7 @@ import { onMount } from "svelte";
     }
     .loading {
         background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' width='575' height='6px'%3E %3Cstyle%3E circle { animation: ball 2.5s cubic-bezier(0.000, 1.000, 1.000, 0.000) infinite; fill: %23bbb; } %23balls { animation: balls 2.5s linear infinite; } %23circle2 { animation-delay: 0.1s; } %23circle3 { animation-delay: 0.2s; } %23circle4 { animation-delay: 0.3s; } %23circle5 { animation-delay: 0.4s; } @keyframes ball { from { transform: none; } 20% { transform: none; } 80% { transform: translateX(864px); } to { transform: translateX(864px); } } @keyframes balls { from { transform: translateX(-40px); } to { transform: translateX(30px); } } %3C/style%3E %3Cg id='balls'%3E %3Ccircle class='circle' id='circle1' cx='-115' cy='3' r='3'/%3E %3Ccircle class='circle' id='circle2' cx='-130' cy='3' r='3' /%3E %3Ccircle class='circle' id='circle3' cx='-145' cy='3' r='3' /%3E %3Ccircle class='circle' id='circle4' cx='-160' cy='3' r='3' /%3E %3Ccircle class='circle' id='circle5' cx='-175' cy='3' r='3' /%3E %3C/g%3E %3C/svg%3E") 50% no-repeat;
-        width: 100%; 
+        width: 100%;
         padding: 10px;
     }
     .index-count {
