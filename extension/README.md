@@ -39,6 +39,9 @@ While switching between types the results could overlap.
 - [ ] Come up with todo items
 
 ## Release Notes
+### 1.0.2
+Change fetch interval from 1s to 100ms
+
 ### 1.0.0
 Added lazy fetching. Symbols are fetched every 1 second. This will fix the performance issue.
 UI enhancements
